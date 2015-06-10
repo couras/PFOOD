@@ -1,0 +1,231 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:cc="http://xmlns.jcp.org/jsf/composite"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ps="http://xmlns.jcp.org/jsf/passthrough"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <!-- INTERFACE -->
+    <cc:interface>
+      
+    </cc:interface>
+
+    <!-- IMPLEMENTATION -->
+    <cc:implementation>
+        <script type="text/javascript" >
+            
+            $(document).ready(function () {
+                
+                function limpa_formulário_cep() {
+                    // Limpa valores do formulário de cep.
+                    $("#cadvendor\\:inputTextRuaVendor").val("");
+                    $("#cadvendor\\:inputTextBairroVendor").val("");
+//                $("#cidade").val("");
+//                $("#uf").val("");
+//                $("#ibge").val("");
+                }
+                function removerAc(str){
+                    return str.replace(/[áàâã]/g,'a').replace(/[éèê]/g,'e').replace(/[óòôõö]/g,'o').replace(/[úùûü]/g,'u');
+                }
+                
+                //Quando o campo cep perde o foco.
+                $("#cadvendor\\:inputTextCepVendor").blur(function () {
+                    
+                    //Nova variável com valor do campo "cep".
+                    var cep = $(this).val();
+                    
+                    //Verifica se campo cep possui valor informado.
+                    if (cep != "") {
+                        
+                        //Expressão regular para validar o CEP.
+                        var validacep = /^[0-9]{5}-?[0-9]{3}$/;
+                        
+                        //Valida o formato do CEP.
+                        if (validacep.test(cep)) {
+                            
+                            //Preenche os campos com "..." enquanto consulta webservice.
+                            $("#cadvendor\\:inputTextRuaVendor").val("... Aguarde Pesquisando cep");
+                            $("#cadvendor\\:inputTextBairroVendor").val("...");
+//                        $("#cidade").val("...")
+//                        $("#uf").val("...")
+//                        $("#ibge").val("...")
+                            
+                            //Consulta o webservice viacep.com.br/
+                            $.getJSON("//viacep.com.br/ws/" + cep + "/json/?callback=?", function (dados) {
+                                
+                                if (!("erro" in dados)) {
+                                    //Atualiza os campos com os valores da consulta.
+                                    $("#cadvendor\\:inputTextRuaVendor").val(dados.logradouro);
+                                    $("#cadvendor\\:inputTextBairroVendor").val(dados.bairro);
+                                     setCidade(removerAc(dados.localidade) +" - "+ dados.uf);  
+//                                    alert(removerAc(dados.localidade) +" - "+ dados.uf)
+//                                    $("#cadvendor\\:selectCidade").val(removerAc(dados.localidade) +" - "+ dados.uf);
+//                                $("#cidade").val(dados.localidade);
+//                                $("#uf").val(dados.uf);
+                                } //end if.
+                                else {
+                                    //CEP pesquisado não foi encontrado.
+                                    limpa_formulário_cep();
+                                    alert("CEP não encontrado.");
+                                }
+                            });
+                        } //end if.
+                        else {
+                            //cep é inválido.
+                            limpa_formulário_cep();
+                            alert("Formato de CEP inválido.");
+                        }
+                    } //end if.
+                });
+            });
+            function setCidade(txt) {
+                
+                $("#cadvendor\\:selectCidadeVendor option").each(function() {
+                   if(  $(this).text() == txt ){
+//                      alert("achei: " +$(this).text());
+//                      alert("achei: " +$(this).val());
+                    $("#cadvendor\\:selectCidadeVendor").val($(this).val());
+   
+                } 
+              });
+            }
+        </script>
+
+        <!-- Trigger the modal with a button -->
+        
+  <h:form prependId="false" id="formCadVendor">
+        <div   id="cadVendorModal" class="modal fade" ps:role="dialog" >
+            <h:panelGroup layout="block"  class="modal-dialog">
+                <h:panelGroup layout="block"  class="modal-content">
+                    <h:panelGroup layout="block"  class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                        <h4 class="modal-title">Modal title</h4>
+                    </h:panelGroup>
+                    
+                        <h:panelGroup id="panelGridDadosVendor" layout="block"  class="modal-body">
+
+                            <h:panelGroup layout="block"  class="form-group">
+                                <h:outputLabel class="control-label" for="inputTextCpfCnpjVendor" value="CPF/CNPJ"/>
+                                <h:inputText class="form-control" id="inputTextCpfCnpjVendor" value="#{vendedorMB.obj.pessoa.cpfCnpj}">
+                                </h:inputText>
+                            </h:panelGroup>
+                            
+                            <h:panelGroup layout="block"  class="form-group">
+                                <h:outputLabel class="control-label" for="inputTextNomeVendor" value="Razao Social"/>
+                                <h:inputText class="form-control" id="inputTextNomeVendor"  value="#{vendedorMB.obj.pessoa.razaoSocial}" >
+                                    <f:validateLength minimum="3" maximum="100"/>
+                                </h:inputText>
+                                <h:message for="inputTextNomeVendor"  style="color: red;font-size:8pt; " />
+                            </h:panelGroup>
+                            
+                            <h:panelGroup layout="block"  class="form-group">
+                                <h:outputLabel class="control-label" for="inputTextNomeFVendor" value="Nome Fantasia"/>
+                                <h:inputText class="form-control" id="inputTextNomeFVendor"  value="#{vendedorMB.obj.pessoa.nomeFantasia}" >
+                                    <f:validateLength minimum="3" maximum="100"/>
+                                </h:inputText>
+                                <h:message for="inputTextNomeFVendor"  style="color: red;font-size:8pt; " />
+                            </h:panelGroup>
+                            
+                            <h:panelGroup layout="block"  class="form-group">
+                                <h:outputLabel class="control-label" for="inputTextEmailVendor" value="Email"/>
+                                <h:inputText class="form-control" id="inputTextEmailVendor" value="#{vendedorMB.obj.pessoa.email}" >
+                                    <f:validator validatorId="br.com.pfood.validator.EmailValidator" />
+                                </h:inputText>
+                                <h:message for="inputTextEmail" style="color: red;font-size:8pt; " />
+                            </h:panelGroup>
+                            
+                           <h:panelGroup layout="block"  class="form-group">
+                               <h:outputLabel class="control-label" for="inputTextSenhaVendor" value="Senha"/>
+                                <h:inputText class="form-control" id="inputTextSenhaVendor" value="#{vendedorMB.user.senha}" ps:type="password" />
+                            </h:panelGroup>
+                            
+                            <h:panelGroup layout="block"  class="form-group">
+                                <div class="row">
+                                    <div class="col-xs-6 col-md-6">
+                                        <h:outputLabel class="control-label" for="inputTextTelefoneVendor" value="Telefone/Celular Contato Pessoal"/>
+                                        <h:inputText class="form-control" id="inputTextTelefoneVendor" value="#{vendedorMB.obj.pessoa.telefone}" />
+                                    </div>
+                                    <div class="col-xs-6 col-md-6">
+                                        <h:outputLabel class="control-label" for="inputTextTelefone2Vendor" value="Telefone/Celular visivel publico"/>
+                                        <h:inputText class="form-control" id="inputTextTelefone2Vendor" value="#{vendedorMB.obj.telefone1}" />
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-xs-6 col-md-6">
+                                        <h:outputLabel class="control-label" for="inputTextTelefone3Vendor" value="Telefone/Celular visivel publico"/>
+                                        <h:inputText class="form-control" id="inputTextTelefone3Vendor" value="#{vendedorMB.obj.telefone2}" />
+                                    </div>
+                                    <div class="col-xs-6 col-md-6">
+                                        <h:outputLabel class="control-label" for="inputTextTelefone4Vendor" value="Telefone/Celular visivel publico"/>
+                                        <h:inputText class="form-control" id="inputTextTelefone4Vendor" value="#{vendedorMB.obj.telefone3}" />
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-xs-6 col-md-6">
+                                        <h:outputLabel class="control-label" for="inputTextTelefone5Vendor" value="Telefone/Celular visivel publico"/>
+                                        <h:inputText class="form-control" id="inputTextTelefone5Vendor" value="#{vendedorMB.obj.telefone4}" />
+                                    </div>
+                                    <div class="col-xs-6 col-md-6">
+                                        <h:outputLabel class="control-label" for="inputTextTelefone6Vendor" value="Telefone/Celular visivel publico"/>
+                                        <h:inputText class="form-control" id="inputTextTelefone6Vendor" value="#{vendedorMB.obj.telefone5}" />
+                                    </div>
+                                </div>
+                            </h:panelGroup>
+                            
+                            
+                         
+                            
+                            <h:panelGroup layout="block"  class="form-group">
+                                <h:outputLabel class="control-label" for="inputTextCepVendor" value="CEP"/>
+                                <h:inputText class="form-control" id="inputTextCepVendor" value="#{vendedorMB.obj.pessoa.cep}"  />
+                            </h:panelGroup>
+
+                            <h:panelGroup layout="block"  class="form-group">
+                                <h:outputLabel class="control-label" for="inputTextRuaVendor" value="Logradouro"/>
+                                <h:inputText class="form-control" id="inputTextRuaVendor" value="#{vendedorMB.obj.pessoa.endereco}" />
+                            </h:panelGroup>
+                            
+                             <h:panelGroup layout="block"  class="form-group">
+                                 <h:outputLabel class="control-label" for="inputTextEnderecoNumeroVendor" value="Numero"/>
+                                <h:inputText class="form-control" id="inputTextEnderecoNumeroVendor" value="#{vendedorMB.obj.pessoa.enderecoNumero}" />
+                             </h:panelGroup>
+                            
+                            
+                             <h:panelGroup layout="block"  class="form-group">
+                                 <h:outputLabel class="control-label" for="inputTextEnderecoComplementoVendor" value="Complemento"/>
+                                <h:inputText class="form-control" id="inputTextEnderecoComplementoVendor" value="#{vendedorMB.obj.pessoa.enderecoComplemento}" />
+                             </h:panelGroup>
+
+                               
+                             <h:panelGroup layout="block"  class="form-group">
+                                 <h:outputLabel class="control-label" for="inputTextBairroVendor" value="BairroVendor"  />
+                                <h:inputText class="form-control" id="inputTextBairroVendor" value="#{vendedorMB.obj.pessoa.bairro}" />
+                             </h:panelGroup>
+                            
+                            <h:panelGroup layout="block"  class="form-group">
+                                <h:outputLabel class="control-label" for="selectCidadeVendor" value="Cidade"/>
+                                <h:selectOneMenu id="selectCidadeVendor" class="form-control" converter="cidadeConverter" value="#{vendedorMB.obj.pessoa.cidade}" >
+                                    <f:selectItems value="#{cidadeMB.lista}"  var="cid" itemValue="#{cid}" itemLabel="#{cid.nome} - #{cid.estado.sigla}"/> 
+                                </h:selectOneMenu>    
+                             </h:panelGroup>   
+                            
+                        </h:panelGroup>
+
+                        <h:panelGroup layout="block"  class="modal-footer">
+                            <a id="closeDialogVendor" class="btn btn-default" data-dismiss="modal">Close</a>
+                            
+                            <h:commandButton class="btn btn-primary" value="Salvar"   >
+                                <f:ajax execute="@form" listener="#{vendedorMB.save(evt)}" event="click" render="panelGridDadosVendor" />
+                            </h:commandButton>
+                        </h:panelGroup>
+                    
+                </h:panelGroup>
+            </h:panelGroup>
+        </div>
+      </h:form>
+           <script>            $("#cadVendorModal").on("shown.bs.modal", function () {
+                $("#cadvendor\\:inputTextCpfCnpjVendor").focus();
+            });</script>
+    </cc:implementation>
+</html>

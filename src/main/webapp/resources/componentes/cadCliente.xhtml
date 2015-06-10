@@ -1,0 +1,199 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:cc="http://xmlns.jcp.org/jsf/composite"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ps="http://xmlns.jcp.org/jsf/passthrough"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <!-- INTERFACE -->
+    <cc:interface>
+
+    </cc:interface>
+
+    <!-- IMPLEMENTATION -->
+    <cc:implementation>
+        <script type="text/javascript" >
+
+            $(document).ready(function () {
+
+                function limpa_formulário_cep() {
+                    // Limpa valores do formulário de cep.
+                    $("#cadcli\\:inputTextRua").val("");
+                    $("#cadcli\\:inputTextBairro").val("");
+//                $("#cidade").val("");
+//                $("#uf").val("");
+//                $("#ibge").val("");
+                }
+                function removerAc(str) {
+                    return str.replace(/[áàâã]/g, 'a').replace(/[éèê]/g, 'e').replace(/[óòôõö]/g, 'o').replace(/[úùûü]/g, 'u');
+                }
+
+                //Quando o campo cep perde o foco.
+                $("#cadcli\\:inputTextCep").blur(function () {
+
+                    //Nova variável com valor do campo "cep".
+                    var cep = $(this).val();
+
+                    //Verifica se campo cep possui valor informado.
+                    if (cep != "") {
+
+                        //Expressão regular para validar o CEP.
+                        var validacep = /^[0-9]{5}-?[0-9]{3}$/;
+
+                        //Valida o formato do CEP.
+                        if (validacep.test(cep)) {
+
+                            //Preenche os campos com "..." enquanto consulta webservice.
+                            $("#cadcli\\:inputTextRua").val("... Aguarde Pesquisando cep");
+                            $("#cadcli\\:inputTextBairro").val("...");
+//                        $("#cidade").val("...")
+//                        $("#uf").val("...")
+//                        $("#ibge").val("...")
+
+                            //Consulta o webservice viacep.com.br/
+                            $.getJSON("//viacep.com.br/ws/" + cep + "/json/?callback=?", function (dados) {
+
+                                if (!("erro" in dados)) {
+                                    //Atualiza os campos com os valores da consulta.
+                                    $("#cadcli\\:inputTextRua").val(dados.logradouro);
+                                    $("#cadcli\\:inputTextBairro").val(dados.bairro);
+                                    setCidade(removerAc(dados.localidade) +" - "+ dados.uf);                        
+            
+//                                    alert(removerAc(dados.localidade) +" - "+ dados.uf)
+//                                    $("#cadcli\\:selectCidade").val(removerAc(dados.localidade) +" - "+ dados.uf);
+//                                $("#cidade").val(dados.localidade);
+//                                $("#uf").val(dados.uf);
+                                } //end if.
+                                else {
+                                    //CEP pesquisado não foi encontrado.
+                                    limpa_formulário_cep();
+                                    alert("CEP não encontrado.");
+                                }
+                            });
+                        } //end if.
+                        else {
+                            //cep é inválido.
+                            limpa_formulário_cep();
+                            alert("Formato de CEP inválido.");
+                        }
+                    } //end if.
+                });
+            });
+                
+            function setCidade(txt) {
+                
+                $("#cadcli\\:selectCidade option").each(function() {
+                   if(  $(this).text() == txt ){
+//                      alert("achei: " +$(this).text());
+//                      alert("achei: " +$(this).val());
+                    $("#cadcli\\:selectCidade").val($(this).val());
+   
+                } 
+              });
+            }
+        </script>
+
+        <!-- Trigger the modal with a button -->
+
+        <h:form prependId="false" id="formCadUser">
+            <div   id="cadCliModal" class="modal fade" ps:role="dialog" >
+                <h:panelGroup layout="block"  class="modal-dialog">
+                    <h:panelGroup layout="block"  class="modal-content">
+                        <h:panelGroup layout="block"  class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                            <h4 class="modal-title">Modal title</h4>
+                        </h:panelGroup>
+
+                        <h:panelGroup id="panelGridDados" layout="block"  class="modal-body">
+
+                            <h:panelGroup layout="block"  class="form-group">
+                                <h:outputLabel class="control-label" for="inputTextNome" value="Nome"/>
+                                <h:inputText class="form-control" id="inputTextNome" validatorMessage="Minimo 3 max 100" value="#{clienteMB.obj.pessoa.razaoSocial}" >
+                                    <f:validateLength minimum="3" maximum="100"/>
+                                </h:inputText>
+                                <h:message for="inputTextNome"  style="color: red;font-size:8 " />
+                            </h:panelGroup>
+
+                            <h:panelGroup layout="block"  class="form-group">
+                                <h:outputLabel class="control-label" for="inputTextEmail" value="Email"/>
+                                <h:inputText class="form-control" id="inputTextEmail" value="#{clienteMB.obj.pessoa.email}" >
+                                    <f:validator validatorId="br.com.pfood.validator.EmailValidator" />
+                                </h:inputText>
+                                <h:message for="inputTextEmail" style="color: red;font-size:8 " />
+                            </h:panelGroup>
+
+                            <h:panelGroup layout="block"  class="form-group">
+                                <h:outputLabel class="control-label" for="inputTextSenha" value="Senha"/>
+                                <h:inputText class="form-control" id="inputTextSenha" value="#{clienteMB.user.senha}" ps:type="password" />
+                            </h:panelGroup>
+
+                            <h:panelGroup layout="block"  class="form-group">
+                                <h:outputLabel class="control-label" for="inputTextTelefone" value="Telefone/Celular"/>
+                                <h:inputText class="form-control" id="inputTextTelefone" value="#{clienteMB.obj.pessoa.telefone}" />
+                            </h:panelGroup>
+
+
+                            <h:panelGroup layout="block"  class="form-group">
+                                <h:outputLabel class="control-label" for="inputTextCpf" value="CPF"/>
+                                <h:inputText class="form-control" id="inputTextCpf" value="#{clienteMB.obj.pessoa.cpfCnpj}" >
+                                    <f:converter converterId="cpfConverter"/>
+                                    <f:validator validatorId="br.com.pfood.validator.CpfValidator"/>
+                                </h:inputText>
+                            </h:panelGroup>
+
+                            <h:panelGroup layout="block"  class="form-group">
+                                <h:outputLabel class="control-label" for="inputTextCep" value="CEP"/>
+                                <h:inputText class="form-control" id="inputTextCep" value="#{clienteMB.obj.pessoa.cep}"  />
+                            </h:panelGroup>
+
+                            <h:panelGroup layout="block"  class="form-group">
+                                <h:outputLabel class="control-label" for="inputTextRua" value="Logradouro"/>
+                                <h:inputText class="form-control" id="inputTextRua" value="#{clienteMB.obj.pessoa.endereco}" />
+                            </h:panelGroup>
+
+                            <h:panelGroup layout="block"  class="form-group">
+                                <h:outputLabel class="control-label" for="inputTextEnderecoNumero" value="Numero"/>
+                                <h:inputText class="form-control" id="inputTextEnderecoNumero" value="#{clienteMB.obj.pessoa.enderecoNumero}" />
+                            </h:panelGroup>
+
+
+                            <h:panelGroup layout="block"  class="form-group">
+                                <h:outputLabel class="control-label" for="inputTextEnderecoComplemento" value="Complemento"/>
+                                <h:inputText class="form-control" id="inputTextEnderecoComplemento" value="#{clienteMB.obj.pessoa.enderecoComplemento}" />
+                            </h:panelGroup>
+
+
+                            <h:panelGroup layout="block"  class="form-group">
+                                <h:outputLabel class="control-label" for="inputTextBairro" value="Bairro"  />
+                                <h:inputText class="form-control" id="inputTextBairro" value="#{clienteMB.obj.pessoa.bairro}" />
+                            </h:panelGroup>
+
+                            <h:panelGroup layout="block"  class="form-group">
+                                <h:outputLabel class="control-label" for="selectCidade" value="Cidade"/>
+                                <h:selectOneMenu id="selectCidade"  class="form-control" converter="cidadeConverter" value="#{clienteMB.obj.pessoa.cidade}" >
+                                    <f:selectItems value="#{cidadeMB.lista}"  var="cid" itemValue="#{cid}" itemLabel="#{cid.nome} - #{cid.estado.sigla}"/> 
+                                </h:selectOneMenu>    
+                            </h:panelGroup>
+
+
+
+                        </h:panelGroup>
+
+                        <h:panelGroup layout="block"  class="modal-footer">
+                            <a id="closeDialogCli" class="btn btn-default" data-dismiss="modal">Close</a>
+
+                            <h:commandButton class="btn btn-primary" value="Salvar" id="btnSubmitCli"   >
+                                <f:ajax execute="@form" listener="#{clienteMB.save(evt)}" event="click" render="panelGridDados" />
+                            </h:commandButton>
+                        </h:panelGroup>
+
+                    </h:panelGroup>
+                </h:panelGroup>
+            </div>
+        </h:form>
+        <script>            $("#cadCliModal").on("shown.bs.modal", function () {
+                $("#cadcli\\:inputTextNome").focus();
+            });</script>
+    </cc:implementation>
+</html>
