@@ -31,7 +31,7 @@ public class GeraBanco {
         conf.setProperty("hibernate.dialect", "org.hibernate.dialect.MySQLDialect");      
         conf.setProperty("hibernate.connection.driver_class", "com.mysql.jdbc.Driver");                                                                            
         conf.setProperty("hibernate.connection.username", "root");   
-        conf.setProperty("hibernate.connection.password", "root");
+        conf.setProperty("hibernate.connection.password", "Pfood2015");
         
         conf.setProperty("hibernate.hbm2ddl.auto", "create");
         

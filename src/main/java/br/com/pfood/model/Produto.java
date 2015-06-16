@@ -6,12 +6,14 @@ import java.util.Date;
 import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.ForeignKey;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -41,39 +43,13 @@ public class Produto implements Serializable {
     @Column(name = "descriComplementoPadrao")
     private String descriComplementoPadrao;
     
-    @ManyToMany()
-    @JoinTable(name = "produto_complemento_padrao", joinColumns
-            = @JoinColumn(name = "id_produto"),
-            inverseJoinColumns
-            = @JoinColumn(name = "id_complemento"))
-    @Cascade(org.hibernate.annotations.CascadeType.ALL)
-    @BatchSize(size = 15)
-    private List<Complemento> listaComplementoPadrao = new ArrayList<Complemento>();
-
-        @Column(name = "descriComplementoAdicional")
-    private String descriComplementoAdicional;
+    @ManyToOne()
+    @JoinColumn(name="id_grupo" , foreignKey = @ForeignKey(name = "produto_grupo_fk"))
+    private GrupoProduto grupo;
     
-    @ManyToMany()
-    @JoinTable(name = "produto_complemento_adicional", joinColumns
-            = @JoinColumn(name = "id_produto"),
-            inverseJoinColumns
-            = @JoinColumn(name = "id_complemento"))
-    @Cascade(org.hibernate.annotations.CascadeType.ALL)
-    @BatchSize(size = 15)
-    private List<Complemento> listaComplementoAdcional = new ArrayList<Complemento>();
-
-    
-    @Column(name = "descriComplementoEscolha")
-    private String descriComplementoEscaolha;
-    
-    @ManyToMany()
-    @JoinTable(name = "produto_complemento_escolha", joinColumns
-            = @JoinColumn(name = "id_produto"),
-            inverseJoinColumns
-            = @JoinColumn(name = "id_complemento"))
-    @Cascade(org.hibernate.annotations.CascadeType.ALL)
-    @BatchSize(size = 15)
-    private List<Complemento> listaComplementoEscolha = new ArrayList<Complemento>();
+    @ManyToOne()
+    @JoinColumn(name="id_vendedor" , foreignKey = @ForeignKey(name = "produto_vendedor_fk"))
+    private Vendedor vendedor;
 
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "data_alteracao")
@@ -99,6 +75,14 @@ public class Produto implements Serializable {
         this.descricao = descricao;
     }
 
+    public String getTag() {
+        return tag;
+    }
+
+    public void setTag(String tag) {
+        this.tag = tag;
+    }
+
     public Double getValorPadrao() {
         return valorPadrao;
     }
@@ -107,37 +91,30 @@ public class Produto implements Serializable {
         this.valorPadrao = valorPadrao;
     }
 
-    public List<Complemento> getListaComplementoPadrao() {
-        return listaComplementoPadrao;
+    public String getDescriComplementoPadrao() {
+        return descriComplementoPadrao;
     }
 
-    public void setTag(String tag) {
-        this.tag = tag;
+    public void setDescriComplementoPadrao(String descriComplementoPadrao) {
+        this.descriComplementoPadrao = descriComplementoPadrao;
     }
 
-    public String getTag() {
-        return tag;
+    public GrupoProduto getGrupo() {
+        return grupo;
     }
 
-    public void setListaComplementoPadrao(List<Complemento> listaComplementoPadrao) {
-        this.listaComplementoPadrao = listaComplementoPadrao;
+    public void setGrupo(GrupoProduto grupo) {
+        this.grupo = grupo;
     }
 
-    public List<Complemento> getListaComplementoAdcional() {
-        return listaComplementoAdcional;
+    public Vendedor getVendedor() {
+        return vendedor;
     }
 
-    public void setListaComplementoAdcional(List<Complemento> listaComplementoAdcional) {
-        this.listaComplementoAdcional = listaComplementoAdcional;
+    public void setVendedor(Vendedor vendedor) {
+        this.vendedor = vendedor;
     }
 
-    public List<Complemento> getListaComplementoEscolha() {
-        return listaComplementoEscolha;
-    }
-
-    public void setListaComplementoEscolha(List<Complemento> listaComplementoEscolha) {
-        this.listaComplementoEscolha = listaComplementoEscolha;
-    }
 
     public Date getDataAlteracao() {
         return dataAlteracao;
@@ -155,29 +132,7 @@ public class Produto implements Serializable {
         this.dataInclusao = dataInclusao;
     }
 
-    public String getDescriComplementoPadrao() {
-        return descriComplementoPadrao;
-    }
-
-    public void setDescriComplementoPadrao(String descriComplementoPadrao) {
-        this.descriComplementoPadrao = descriComplementoPadrao;
-    }
-
-    public String getDescriComplementoAdicional() {
-        return descriComplementoAdicional;
-    }
-
-    public void setDescriComplementoAdicional(String descriComplementoAdicional) {
-        this.descriComplementoAdicional = descriComplementoAdicional;
-    }
-
-    public String getDescriComplementoEscaolha() {
-        return descriComplementoEscaolha;
-    }
-
-    public void setDescriComplementoEscaolha(String descriComplementoEscaolha) {
-        this.descriComplementoEscaolha = descriComplementoEscaolha;
-    }
+  
 
     @Override
     public int hashCode() {

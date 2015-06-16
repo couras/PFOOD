@@ -15,7 +15,7 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 @Entity
-@Table(name = "Imagem")
+@Table(name = "imagem")
 public class Imagem implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -39,13 +39,7 @@ public class Imagem implements Serializable {
     
     @Column(name = "codigo")
     private Integer codigo;
-    
-    @ManyToOne()
-    @JoinColumn(name="id_vendedor" , foreignKey = @ForeignKey(name = "img_vendor_fk"))
-    private Vendedor vendedor;
-        	
-	
-    
+
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "data_alteracao")
     private Date dataAlteracao;
@@ -76,14 +70,6 @@ public class Imagem implements Serializable {
 
     public void setNomeArquivo(String nomeArquivo) {
         this.nomeArquivo = nomeArquivo;
-    }
-
-    public Vendedor getVendedor() {
-        return vendedor;
-    }
-
-    public void setVendedor(Vendedor vendedor) {
-        this.vendedor = vendedor;
     }
 
     public Integer getSequencia() {

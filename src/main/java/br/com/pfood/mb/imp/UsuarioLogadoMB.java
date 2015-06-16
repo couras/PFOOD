@@ -34,6 +34,15 @@ public class UsuarioLogadoMB implements Serializable {
     @Inject
     @Bundle(tipo = "nomeServico")
     private transient ResourceBundle bundleNomeServico;
+    
+
+    public ResourceBundle getBundleNomeServico() {
+        return bundleNomeServico;
+    }
+
+    public void setBundleNomeServico(ResourceBundle bundleNomeServico) {
+        this.bundleNomeServico = bundleNomeServico;
+    }
 
     
     public Usuario getUsuario() {

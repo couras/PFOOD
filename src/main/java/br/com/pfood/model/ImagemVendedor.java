@@ -1,3 +1,8 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
 package br.com.pfood.model;
 
 import java.io.Serializable;
@@ -14,20 +19,26 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+/**
+ *
+ * @author palazzio
+ */
 @Entity
-@Table(name = "grupo_produto")
-public class GrupoProduto implements Serializable {
-
-    private static final long serialVersionUID = 1L;
-
+@Table(name = "imagem_vendedor")
+public class ImagemVendedor implements Serializable{
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "id_grupo_produto")
-    private int idGrupoProduto;
+    @Column(name = "id_imagem_vendedor")
+    private int idImagemVendedor;
 
-    @Column(name = "descricao", length = 60, nullable = false)
-    private String descricao;
-
+    @ManyToOne
+    @JoinColumn(name="id_vendedor" , foreignKey = @ForeignKey(name = "imgProd_vendor_fk"))
+    private Vendedor vendedor;
+       
+    @Column(name = "sequencia")
+    private Integer sequencia=0;
+    
+    
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "data_alteracao")
     private Date dataAlteracao;
@@ -36,20 +47,28 @@ public class GrupoProduto implements Serializable {
     @Column(name = "data_inclusao")
     private Date dataInclusao;
 
-    public int getIdGrupoProduto() {
-        return idGrupoProduto;
+    public int getIdImagemVendedor() {
+        return idImagemVendedor;
     }
 
-    public void setIdGrupoProduto(int idGrupoProduto) {
-        this.idGrupoProduto = idGrupoProduto;
+    public void setIdImagemVendedor(int idImagemVendedor) {
+        this.idImagemVendedor = idImagemVendedor;
     }
 
-    public String getDescricao() {
-        return descricao;
+    public Vendedor getVendedor() {
+        return vendedor;
     }
 
-    public void setDescricao(String descricao) {
-        this.descricao = descricao;
+    public void setVendedor(Vendedor vendedor) {
+        this.vendedor = vendedor;
+    }
+
+    public Integer getSequencia() {
+        return sequencia;
+    }
+
+    public void setSequencia(Integer sequencia) {
+        this.sequencia = sequencia;
     }
 
     public Date getDataAlteracao() {
@@ -71,7 +90,7 @@ public class GrupoProduto implements Serializable {
     @Override
     public int hashCode() {
         int hash = 7;
-        hash = 37 * hash + this.idGrupoProduto;
+        hash = 37 * hash + this.idImagemVendedor;
         return hash;
     }
 
@@ -83,11 +102,12 @@ public class GrupoProduto implements Serializable {
         if (getClass() != obj.getClass()) {
             return false;
         }
-        final GrupoProduto other = (GrupoProduto) obj;
-        if (this.idGrupoProduto != other.idGrupoProduto) {
+        final ImagemVendedor other = (ImagemVendedor) obj;
+        if (this.idImagemVendedor != other.idImagemVendedor) {
             return false;
         }
         return true;
     }
-
+    
+    
 }

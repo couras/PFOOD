@@ -47,6 +47,22 @@ public class LoginMB extends GenericMBImp<Usuario> implements Serializable {
     public void init() {
         super.init(usuarioBO);
     }
+
+    public ResourceBundle getBundleMenssagens() {
+        return bundleMenssagens;
+    }
+
+    public void setBundleMenssagens(ResourceBundle bundleMenssagens) {
+        this.bundleMenssagens = bundleMenssagens;
+    }
+
+    public ResourceBundle getBundleServico() {
+        return bundleServico;
+    }
+
+    public void setBundleServico(ResourceBundle bundleServico) {
+        this.bundleServico = bundleServico;
+    }
     
     public String getUsuario() {
         return usuario;
@@ -78,7 +94,7 @@ public class LoginMB extends GenericMBImp<Usuario> implements Serializable {
         obj.setUsuario(usuario);
         obj.setSenha(Encrypt.criptografarSenhaUsuario(senha));
         obj = usuarioBO.getPorAtributosUnicos(obj);
-        
+
         if (obj != null) {
             if (obj.getSituacao().equals(SituacaoEnum.I) ) {
                 messageUtil.addMenssageError(bundleMenssagens.getString("usuarioInvalido"));
@@ -86,7 +102,8 @@ public class LoginMB extends GenericMBImp<Usuario> implements Serializable {
             }
             
             try {
-                usuarioLogadoMB.setUsuario(obj);             
+                usuarioLogadoMB.setUsuario(obj);
+                usuarioLogadoMB.setUrlServico(bundleServico.getString("pfoodServiceImage"));
                 FacesContext.getCurrentInstance().getExternalContext().redirect("../protected/homeuser.jsf");                
             } catch (IOException e) {
                 e.printStackTrace();

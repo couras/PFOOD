@@ -6,28 +6,24 @@
 
 package br.com.pfood.mb.imp;
 
-import br.com.pfood.bo.ProdutoBO;
-import br.com.pfood.enumerated.SituacaoEnum;
-import br.com.pfood.model.Produto;
+import br.com.pfood.bo.ComplementoBO;
+import br.com.pfood.model.Complemento;
 import br.com.pfood.model.Usuario;
-import br.com.pfood.util.Encrypt;
 import javax.annotation.PostConstruct;
-import javax.faces.event.ActionEvent;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
-import org.primefaces.context.RequestContext;
 
 
 /**
  *
  * @author r.palazzio
  */
-@Named(value = "produtoMB")
+@Named(value = "complementoMB")
 @ViewScoped
-public class ProdutoMB extends GenericMBImp<Produto>{
+public class ComplementoMB extends GenericMBImp<Complemento>{
     
-    @Inject ProdutoBO produtoBO;
+    @Inject ComplementoBO complementcBO;
     private Usuario user  = null;
 
     public Usuario getUser() {
@@ -41,8 +37,9 @@ public class ProdutoMB extends GenericMBImp<Produto>{
     
     @PostConstruct
     public void   init(){
-        super.init(produtoBO);
+        super.init(complementcBO);
         user = new Usuario();
+        super.getAll();
     }
 
 

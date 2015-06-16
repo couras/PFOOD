@@ -4,17 +4,15 @@
  * and open the template in the editor.
  */
 
-package br.com.pfood.dao.imp;
+package br.com.pfood.bo;
 
-import br.com.pfood.dao.CidadeDAO;
-import java.io.Serializable;
 import javax.enterprise.inject.Typed;
 
 /**
  *
  * @author r.palazzio
  */
-@Typed(CidadeDAO.class)
-public class CidadeDAOImp extends GenericDAOImp implements CidadeDAO , Serializable{
+
+public interface ComplementoBO  extends GenericBO{
     
 }

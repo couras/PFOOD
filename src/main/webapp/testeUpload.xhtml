@@ -50,9 +50,10 @@ and open the template in the editor.
                                 xhr.addEventListener("load", uploadComplete, false);
                                 xhr.addEventListener("error", uploadFailed, false);
                                 xhr.addEventListener("abort", uploadCanceled, false);
-                                xhr.open("POST", "UploadServlet");
+                                xhr.open("POST", '#{usuarioLogadoMB.getServico("setImagem")}');
                                 xhr.send(fd);
                         }
+                        
 
                         function uploadProgress(evt) {
                         if (evt.lengthComputable) {

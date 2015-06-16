@@ -22,12 +22,7 @@
                         <h:panelGroup  layout="block" class="col-md-4" style="min-height: 120px; border-style: dotted; border-width: 1px;">
                             
                             <h:form  prependId="false" enctype="multipart/form-data">
-                                <p:fileUpload value="#{imageMB.file}" mode="simple" skinSimple="true">
-                                    <f:ajax render="@form"/>
-                                </p:fileUpload>
-                               
-                                <h:inputTextarea value="#{imageMB.fileContent}"
-                                                 readonly="true"/>
+         
                             </h:form>
 
                         </h:panelGroup>

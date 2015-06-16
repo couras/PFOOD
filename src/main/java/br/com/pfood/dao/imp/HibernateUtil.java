@@ -12,9 +12,12 @@ import br.com.pfood.model.Estado;
 import br.com.pfood.model.FormaPagamento;
 import br.com.pfood.model.GrupoProduto;
 import br.com.pfood.model.Imagem;
+import br.com.pfood.model.ImagemProduto;
+import br.com.pfood.model.ImagemVendedor;
 import br.com.pfood.model.Pais;
 import br.com.pfood.model.Pessoa;
 import br.com.pfood.model.Produto;
+import br.com.pfood.model.ProdutoComplemento;
 import br.com.pfood.model.Usuario;
 import br.com.pfood.model.Vendedor;
 import br.com.pfood.model.VendorPerfil;
@@ -60,11 +63,11 @@ public class HibernateUtil {
             
             
 //            
-       conf.setProperty("hibernate.connection.url", "jdbc:mysql://192.168.1.4:3306/pfood"); 
+       conf.setProperty("hibernate.connection.url", "jdbc:mysql://localhost:3306/pfood"); 
         conf.setProperty("hibernate.dialect", "org.hibernate.dialect.MySQLDialect");      
         conf.setProperty("hibernate.connection.driver_class", "com.mysql.jdbc.Driver");                                                                            
         conf.setProperty("hibernate.connection.username", "root");   
-        conf.setProperty("hibernate.connection.password", "root");
+        conf.setProperty("hibernate.connection.password", "");
 
 
         
@@ -96,6 +99,10 @@ public class HibernateUtil {
             conf.addAnnotatedClass(Imagem.class);
             conf.addAnnotatedClass(Produto.class);
             conf.addAnnotatedClass(VendorPerfil.class);
+            conf.addAnnotatedClass(ProdutoComplemento.class);
+            conf.addAnnotatedClass(ImagemProduto.class);
+            conf.addAnnotatedClass(ImagemVendedor.class);
+            
           
             SessionFactory sessionFactory = conf.buildSessionFactory(registry);
             mapaSessao.put(nomeBase, sessionFactory);

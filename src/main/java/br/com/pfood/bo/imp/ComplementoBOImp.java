@@ -6,7 +6,8 @@
 
 package br.com.pfood.bo.imp;
 
-import br.com.pfood.bo.UsuarioBO;
+
+import br.com.pfood.bo.ComplementoBO;
 import java.io.Serializable;
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
@@ -18,18 +19,18 @@ import org.apache.log4j.Logger;
  *
  * @author r.palazzio
  */
-@Typed(UsuarioBO.class)
-public class UsuarioBOImp  extends GenericBOImp implements UsuarioBO , Serializable{
+@Typed(ComplementoBO.class)
+public class ComplementoBOImp  extends GenericBOImp implements ComplementoBO , Serializable{
 
     @Inject transient Logger logger;
     @PostConstruct
     public void init(){
-        logger.debug("UsuarioBO construido");
+        logger.debug("ComplementoBO construido");
     }
     
     @PreDestroy
     public void destroy(){
-        logger.debug("UsuarioBO destruido");
+        logger.debug("ComplementoBO destruido");
     }
 
 }
