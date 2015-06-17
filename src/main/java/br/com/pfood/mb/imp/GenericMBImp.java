@@ -3,7 +3,6 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package br.com.pfood.mb.imp;
 
 import br.com.pfood.bo.GenericBO;
@@ -14,6 +13,7 @@ import java.io.Serializable;
 import java.lang.reflect.ParameterizedType;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
 import javax.enterprise.inject.spi.BeanManager;
 import javax.inject.Inject;
 import org.apache.log4j.Logger;
@@ -22,13 +22,13 @@ import org.apache.log4j.Logger;
  *
  * @author r.palazzio
  */
-public class GenericMBImp<T>  implements GenericMB , Serializable{
+public class GenericMBImp<T> implements GenericMB, Serializable {
 
     private GenericBO genericBO;
-    T  obj;
-    private  List<T> lista;
+    T obj;
+    private List<T> lista;
     private Class<T> classe;
-    @Inject 
+    @Inject
     private transient Logger logger;
     @Inject
     protected MessageUtil messageUtil;
@@ -65,11 +65,11 @@ public class GenericMBImp<T>  implements GenericMB , Serializable{
     public void setBeanManager(BeanManager beanManager) {
         this.beanManager = beanManager;
     }
-    
+
     @Override
-    public void init(GenericBO bo){
+    public void init(GenericBO bo) {
         try {
-            ParameterizedType parameterizedType = (ParameterizedType)getClass().getGenericSuperclass();
+            ParameterizedType parameterizedType = (ParameterizedType) getClass().getGenericSuperclass();
             classe = (Class) parameterizedType.getActualTypeArguments()[0];
             obj = classe.newInstance();
             lista = new ArrayList<T>();
@@ -81,7 +81,7 @@ public class GenericMBImp<T>  implements GenericMB , Serializable{
             ex.printStackTrace();
         }
     }
-    
+
     public T getObj() {
         return obj;
     }
@@ -98,19 +98,27 @@ public class GenericMBImp<T>  implements GenericMB , Serializable{
         this.lista = lista;
     }
 
-   
-    
     public void setGenericBO(GenericBO genericBO) {
         this.genericBO = genericBO;
     }
-    
-    
+
     @Override
-    public <T> void save() { 
+    public <T> void save() {
         try {
-          this.obj = genericBO.save(obj);
+            this.obj = genericBO.save(obj);
+            if (this.lista != null && this.lista.isEmpty()) {
+                lista.add(obj);
+            } else {
+                int index = lista.indexOf(obj);
+                lista.remove(obj);
+                if (index != -1) {
+                    lista.add(index, obj);
+                } else {
+                    lista.add(obj);
+                }
+            }
         } catch (Exception ex) {
-           logger.error(ex.getMessage());
+            logger.error(ex.getMessage());
             messageUtil.addMenssageError(ex.getMessage());
             ex.printStackTrace();
         }
@@ -118,20 +126,50 @@ public class GenericMBImp<T>  implements GenericMB , Serializable{
 
     @Override
     public <T> void remove() {
-       genericBO.remove(obj);
+        try {
+
+            if (this.lista != null && !this.lista.isEmpty()) {
+                int index = lista.indexOf(obj);
+                genericBO.remove(obj);
+                lista.remove(index);
+                this.obj = classe.newInstance();
+            } else {
+                genericBO.remove(obj);
+            }
+        } catch (Exception ex) {
+            logger.error(ex.getMessage());
+            messageUtil.addMenssageError(ex.getMessage());
+            ex.printStackTrace();
+        }
     }
 
+    @Override
+    public <T> void remove(T t) {
+        try {
+            obj = classe.cast(t);
+            this.remove();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
     @Override
     public <T> void getAll() {
-       this.lista =genericBO.getAll(classe);
+        this.lista = genericBO.getAll(classe);
     }
 
     @Override
     public <T, PK extends Serializable> void getById(PK pk) {
         this.obj = genericBO.getById(classe, pk);
     }
-    
-    
-    
+
+    @Override
+    public void novo() {
+        try {
+            this.obj = classe.newInstance();
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+
 }

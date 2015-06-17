@@ -26,10 +26,10 @@ public class Complemento implements Serializable {
     private String descricao;
 
     @Column(name = "valor_adiciona", columnDefinition = "numeric(6,2) default 0")
-    private Double valorAdiciona;
+    private Double valorAdiciona =0.0;
 
     @Column(name = "valor_remover", columnDefinition = "numeric(6,2) default 0")
-    private Double valorRemover;
+    private Double valorRemover =0.0;
 
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "data_alteracao")

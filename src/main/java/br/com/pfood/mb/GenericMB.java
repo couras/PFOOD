@@ -19,8 +19,12 @@ public interface GenericMB {
     public <T  extends GenericBO> void init(T genericBO);
     
     public <T>  void save();
-
+    
+    public void novo();
+    
     public <T>  void remove();
+    
+    public <T>  void remove(T t);
 
     public <T,PK extends Serializable> void getById(PK  pk);
 

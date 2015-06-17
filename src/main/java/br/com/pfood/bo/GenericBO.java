@@ -19,7 +19,7 @@ public interface GenericBO extends Serializable{
     
     public <T extends Object> T save(T entity) throws Exception;
 
-    public <T extends Object>  T remove(T entity) ;
+    public <T extends Object>  void remove(T entity)throws Exception ;
 
     public <T extends Object , PK extends Serializable>   T getById(Class<T> classe, PK  pk);
 

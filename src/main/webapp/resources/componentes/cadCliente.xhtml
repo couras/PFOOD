@@ -84,7 +84,7 @@
             function setCidade(txt) {
                 
                 $("#cadcli\\:selectCidade option").each(function() {
-                   if(  $(this).text() == txt ){
+                   if(  $(this).text().toLowerCase() == txt.toLowerCase() ){
 //                      alert("achei: " +$(this).text());
 //                      alert("achei: " +$(this).val());
                     $("#cadcli\\:selectCidade").val($(this).val());

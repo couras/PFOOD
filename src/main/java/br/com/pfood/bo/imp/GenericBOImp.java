@@ -10,6 +10,7 @@ import br.com.pfood.bo.GenericBO;
 import br.com.pfood.dao.GenericDAO;
 import java.io.Serializable;
 import java.util.List;
+import java.util.logging.Level;
 import javax.inject.Inject;
 import org.apache.log4j.Logger;
 import org.hibernate.Session;
@@ -36,14 +37,20 @@ public abstract class GenericBOImp implements GenericBO , Serializable{
            session.flush();
        }catch(Exception e){
            logger.error(e.getMessage());
-           throw new Exception();
+           throw e;
        }
        return entity;
     }
 
     @Override
-    public <T> T remove(T entity) {
-       return entity;
+    public <T> void remove(T entity) throws Exception {
+        try {
+            dao.remove(entity);
+        } catch (Exception ex) {
+            logger.error(ex.getMessage());
+            throw ex;
+        }
+
     }
 
     @Override
