@@ -28,6 +28,10 @@ public class GrupoProduto implements Serializable {
     @Column(name = "descricao", length = 60, nullable = false)
     private String descricao;
 
+    @ManyToOne()
+    @JoinColumn(name = "id_vendedor" , foreignKey = @ForeignKey(name = "gp_vendor_fk"))
+    private Vendedor vendedor;
+    
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "data_alteracao")
     private Date dataAlteracao;
@@ -66,6 +70,14 @@ public class GrupoProduto implements Serializable {
 
     public void setDataInclusao(Date dataInclusao) {
         this.dataInclusao = dataInclusao;
+    }
+
+    public Vendedor getVendedor() {
+        return vendedor;
+    }
+
+    public void setVendedor(Vendedor vendedor) {
+        this.vendedor = vendedor;
     }
 
     @Override

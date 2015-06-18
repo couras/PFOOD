@@ -22,5 +22,56 @@
     <message-bundle>
         MessagesFaces
     </message-bundle>
-
+    <application>
+        <el-resolver>br.com.pfood.bundle.util.JsfCrudELResolver</el-resolver>
+    </application>
+    <navigation-rule>
+        <from-view-id>*</from-view-id>
+        <navigation-case>
+            <from-outcome>welcome</from-outcome>
+            <to-view-id>/index.xhtml</to-view-id>
+        </navigation-case>
+    </navigation-rule>
+    <managed-bean>
+        <managed-bean-name>grupoProduto</managed-bean-name>
+        <managed-bean-class>br.com.pfood.bundle.GrupoProdutoController</managed-bean-class>
+        <managed-bean-scope>session</managed-bean-scope>
+    </managed-bean>
+    <managed-bean>
+        <managed-bean-name>grupoProdutoJpa</managed-bean-name>
+        <managed-bean-class>br.com.pfood.bundle.GrupoProdutoFacade</managed-bean-class>
+        <managed-bean-scope>session</managed-bean-scope>
+    </managed-bean>
+    <converter>
+        <converter-for-class>br.com.pfood.model.GrupoProduto</converter-for-class>
+        <converter-class>br.com.pfood.bundle.GrupoProdutoConverter</converter-class>
+    </converter>
+    <navigation-rule>
+        <from-view-id>*</from-view-id>
+        <navigation-case>
+            <from-outcome>grupoProduto_create</from-outcome>
+            <to-view-id>/grupoProduto/New.jsp</to-view-id>
+        </navigation-case>
+    </navigation-rule>
+    <navigation-rule>
+        <from-view-id>*</from-view-id>
+        <navigation-case>
+            <from-outcome>grupoProduto_list</from-outcome>
+            <to-view-id>/grupoProduto/List.jsp</to-view-id>
+        </navigation-case>
+    </navigation-rule>
+    <navigation-rule>
+        <from-view-id>*</from-view-id>
+        <navigation-case>
+            <from-outcome>grupoProduto_edit</from-outcome>
+            <to-view-id>/grupoProduto/Edit.jsp</to-view-id>
+        </navigation-case>
+    </navigation-rule>
+    <navigation-rule>
+        <from-view-id>*</from-view-id>
+        <navigation-case>
+            <from-outcome>grupoProduto_detail</from-outcome>
+            <to-view-id>/grupoProduto/Detail.jsp</to-view-id>
+        </navigation-case>
+    </navigation-rule>
 </faces-config>

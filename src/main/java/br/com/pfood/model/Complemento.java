@@ -4,9 +4,13 @@ import java.io.Serializable;
 import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.ForeignKey;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -31,6 +35,10 @@ public class Complemento implements Serializable {
     @Column(name = "valor_remover", columnDefinition = "numeric(6,2) default 0")
     private Double valorRemover =0.0;
 
+    @ManyToOne()
+    @JoinColumn(name = "id_vendedor" , foreignKey = @ForeignKey(name = "comp_vendor_fk"))
+    private Vendedor vendedor;
+    
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "data_alteracao")
     private Date dataAlteracao;
@@ -85,6 +93,14 @@ public class Complemento implements Serializable {
 
     public void setDataInclusao(Date dataInclusao) {
         this.dataInclusao = dataInclusao;
+    }
+
+    public Vendedor getVendedor() {
+        return vendedor;
+    }
+
+    public void setVendedor(Vendedor vendedor) {
+        this.vendedor = vendedor;
     }
 
     @Override

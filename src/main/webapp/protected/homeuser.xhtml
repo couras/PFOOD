@@ -9,8 +9,39 @@
                 xmlns:componentes="http://xmlns.jcp.org/jsf/composite/componentes">
 
     <ui:define name="conteudo">
-        <componentes:cadProduto id="cadPro"/>
-        <componentes:cadComplementos id="cadComp"/>
+        <div class="row">
+            <div class="col-md-4">
+                <div class="panel panel-primary">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">Grupos do menu</h3>
+                    </div>
+                    <div class="panel-body">
+                        <componentes:cadGrupoProduto id="cadGrupoProd"/>
+                    </div>
+                </div>
+
+            </div>    
+            <div class="col-md-8">
+                 <div class="panel panel-primary">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">Componentes dos produtos</h3>
+                    </div>
+                    <div class="panel-body">
+                        <componentes:cadComplementos id="cadComp"/>
+                    </div>
+                 </div>
+            </div>
+            <div class="col-md-12">
+                <hr/>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-8">
+                <componentes:cadProduto id="cadProd"/>
+            </div>    
+        </div>
+
     </ui:define>               
 
 </ui:composition>

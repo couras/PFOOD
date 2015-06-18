@@ -14,6 +14,8 @@ import java.lang.reflect.ParameterizedType;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
+import javax.enterprise.event.Event;
+import javax.enterprise.inject.Any;
 import javax.enterprise.inject.spi.BeanManager;
 import javax.inject.Inject;
 import org.apache.log4j.Logger;
@@ -22,7 +24,7 @@ import org.apache.log4j.Logger;
  *
  * @author r.palazzio
  */
-public class GenericMBImp<T> implements GenericMB, Serializable {
+public abstract class GenericMBImp<T> implements GenericMB, Serializable {
 
     private GenericBO genericBO;
     T obj;
@@ -34,6 +36,17 @@ public class GenericMBImp<T> implements GenericMB, Serializable {
     protected MessageUtil messageUtil;
     protected BeanManager beanManager;
 
+    @Inject @Any private Event<List<T>> eventList;
+
+    public Event<List<T>> getEventList() {
+        return eventList;
+    }
+
+    public void setEventList(Event<List<T>> eventList) {
+        this.eventList = eventList;
+    }
+
+ 
     public Class<T> getClasse() {
         return classe;
     }
@@ -117,6 +130,7 @@ public class GenericMBImp<T> implements GenericMB, Serializable {
                     lista.add(obj);
                 }
             }
+            eventList.fire(lista);
         } catch (Exception ex) {
             logger.error(ex.getMessage());
             messageUtil.addMenssageError(ex.getMessage());
@@ -136,6 +150,7 @@ public class GenericMBImp<T> implements GenericMB, Serializable {
             } else {
                 genericBO.remove(obj);
             }
+           eventList.fire(lista);
         } catch (Exception ex) {
             logger.error(ex.getMessage());
             messageUtil.addMenssageError(ex.getMessage());
@@ -156,6 +171,7 @@ public class GenericMBImp<T> implements GenericMB, Serializable {
     @Override
     public <T> void getAll() {
         this.lista = genericBO.getAll(classe);
+         eventList.fire(lista);
     }
 
     @Override

@@ -16,62 +16,55 @@
     <cc:implementation>
 
         <h:form prependId="false">
-            <h:panelGroup id="panelGroupComplementoEditor" layout="block" class="container">
-                <h:panelGroup layout="block" class="row"> 
-                    <div class="col-md-8 col-sm-10">   
-                        <div class="table-responsive">
-                            <p:dataTable id="dataTableComp" widgetVar="dataTableComp"  var="comp" style="font-size: 12px;" reflow="true" value="#{complementoMB.lista}"
-                                          paginator="true"
-                                          paginatorTemplate="{PageLinks}"
-                                          rows="10">
-                                <p:column headerText="Descrição" >
-                                    <h:outputText value="#{comp.descricao}" />
-                                </p:column>
-                                <p:column headerText="Valor Adiciona">
-                                    <h:outputText   value="#{comp.valorAdiciona}" >
-                                        <f:convertNumber currencySymbol="R$"  type="currency"/>
-                                    </h:outputText>
-                                </p:column>
-                                <p:column headerText="Valor Remove">
-                                    <h:outputText   value="#{comp.valorRemover}" >
-                                        <f:convertNumber currencySymbol="R$"  type="currency"/>
-                                    </h:outputText>
-                                </p:column>
-                                <p:column>
-                                    <h:commandButton value="edit" > 
-                                        <f:ajax onevent="completeComp"   listener="#{complementoMB.setObj(comp)}" execute="@this" render=":cadComp:panelGridDados"/>    
-                                    </h:commandButton>
-                                </p:column>
-                                <p:column>
-                                    <h:commandButton value="remove"  > 
-                                        <f:ajax   listener="#{complementoMB.remove(comp)}"  execute="@this" render="panelGroupComplementoEditor"/>                  
-                                    </h:commandButton>
-                                </p:column>
+            <h:panelGroup id="panelGroupComplementoEditor" layout="block">
+                <p:dataTable id="dataTableComp" widgetVar="dataTableComp"  var="comp" style="font-size: 12px;" value="#{complementoMB.lista}"
+                             paginator="true"
+                             paginatorTemplate="{PageLinks}"
+                             rows="10">
+                    <p:column headerText="Descrição" >
+                        <h:outputText value="#{comp.descricao}" />
+                    </p:column>
+                    <p:column headerText="Valor Adiciona">
+                        <h:outputText   value="#{comp.valorAdiciona}" >
+                            <f:convertNumber currencySymbol="R$"  type="currency"/>
+                        </h:outputText>
+                    </p:column>
+                    <p:column headerText="Valor Remove">
+                        <h:outputText   value="#{comp.valorRemover}" >
+                            <f:convertNumber currencySymbol="R$"  type="currency"/>
+                        </h:outputText>
+                    </p:column>
+                    <p:column>
+                        <h:commandButton value="edit" > 
+                            <f:ajax onevent="completeComp"   listener="#{complementoMB.setObj(comp)}" execute="@this" render=":cadComp:panelGridDados"/>    
+                        </h:commandButton>
+                    </p:column>
+                    <p:column>
+                        <h:commandButton value="remove"  > 
+                            <f:ajax   listener="#{complementoMB.remove(comp)}"  execute="panelGroupComplementoEditor" render="cadComp:panelGroupComplementoEditor"/>                  
+                        </h:commandButton>
+                    </p:column>
 
-                                <f:facet name="footer">
-                                    <h:commandButton class="btn btn-default" actionListener="#{complementoMB.novo()}">
-                                        <f:ajax  onevent="completeComp"  execute=":cadComp:panelGridDados" render=":cadComp:panelGridDados"/>
+                    <f:facet name="footer">
+                        <h:commandButton class="btn btn-default" actionListener="#{complementoMB.novo()}">
+                            <f:ajax  onevent="completeComp"  execute=":cadComp:panelGridDados" render=":cadComp:panelGridDados"/>
 
-                                        <script>
-                                            function completeComp(e) {
-                                                if (e.status == "success")
-                                                    $('#cadCompModal').modal('show');
-                                            }
-                                        </script>
-                                    </h:commandButton>
-                                </f:facet>
+                            <script>
+                                function completeComp(e) {
+                                    if (e.status == "success")
+                                        $('#cadCompModal').modal('show');
+                                }
+                            </script>
+                        </h:commandButton>
+                    </f:facet>
 
-                            </p:dataTable>
-                        </div>
-                    </div>
-
-                </h:panelGroup> 
+                </p:dataTable>
             </h:panelGroup>
         </h:form>
 
 
         <!--modal-->
-        <div   id="cadCompModal" class="modal fade" ps:role="dialog" >
+        <div   id="cadCompModal" class="modal fade modal-lg" ps:role="dialog" >
             <h:form prependId="false">
                 <h:panelGroup layout="block"  class="modal-dialog">
                     <h:panelGroup layout="block"  class="modal-content">
@@ -108,8 +101,8 @@
                                 </div>
                                 <co:message1 target="inputTextValorRemove"/>
                             </h:panelGroup>
-
-
+                            
+                         
                         </h:panelGroup>
 
                         <h:panelGroup layout="block"  class="modal-footer">
@@ -118,11 +111,11 @@
                             <h:commandButton class="btn btn-primary" value="Salvar" id="btnSubmitComp"   >
                                 <f:ajax execute="panelGridDados" onevent="completeCompSave" listener="#{complementoMB.save()}"  render="panelGridDados :cadComp:panelGroupComplementoEditor" />
                                 <script>
-                                            function completeCompSave(e) {
-                                                if (e.status == "success")
-                                                    $('#cadCompModal').modal('hide');
-                                            }
-                                        </script>
+                                    function completeCompSave(e) {
+                                        if (e.status == "success")
+                                            $('#cadCompModal').modal('hide');
+                                    }
+                                </script>
                             </h:commandButton>
                         </h:panelGroup>
 
@@ -131,7 +124,9 @@
             </h:form>
         </div>
 
-
+        <script>            $("#cadCompModal").on("shown.bs.modal", function () {
+                $("#cadComp\\:inputTextDescComp").focus();
+            });</script>
 
     </cc:implementation>
 </html>

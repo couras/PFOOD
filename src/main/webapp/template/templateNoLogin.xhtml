@@ -18,25 +18,27 @@ and open the template in the editor.
 
         <meta charset="utf-8"/>
         <meta name="viewport" content="width=device-width, initial-scale=1"/>
-        <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
-        <script type="text/javascript" src="http://netdna.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+<!--         <h:outputScript library="js" name="jquery-1.11.3.min.js"/>-
+         <h:outputScript library="primefaces/jquery" name="jquery.js"/>
+         <h:outputScript>$ = jQuery;</h:outputScript>-->
+         <h:outputScript library="js" name="bootstrap.min.js"/>
+         <h:outputScript library="js" name="tabulation.js" />
+         <h:outputScript library="js" name="jquery.maskMoney.js" />
         <link href="http://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.min.css"
         rel="stylesheet" type="text/css"/>
-        <link href="http://pingendo.github.io/pingendo-bootstrap/themes/default/bootstrap.css"
-        rel="stylesheet" type="text/css"/>
+        <h:outputStylesheet library="css" name="bootstrap.min.css" />
         
 
     
     </h:head>
     <f:view locale="#{localeControlerMB.currentLocale}">
-        <h:body>
-           
-
+        <h:body class="container-fluid">
+                
             <ui:insert name="conteudo"></ui:insert>
         
             <co:footer/>    
+            <h:form><p:inputText type="hidden" /></h:form><!--hack primefaces para importar jquery-->
         </h:body>
-        <h:outputScript library="js" name="tabulation.js" />
-         <h:outputScript library="js" name="jquery.maskMoney.js" />
+
     </f:view>
 </html>

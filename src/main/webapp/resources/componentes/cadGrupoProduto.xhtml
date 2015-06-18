@@ -1,0 +1,103 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:cc="http://xmlns.jcp.org/jsf/composite"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ps="http://xmlns.jcp.org/jsf/passthrough"
+      xmlns:component="http://xmlns.jcp.org/jsf/composite/component">
+
+    <!-- INTERFACE -->
+    <cc:interface>
+    </cc:interface>
+
+    <!-- IMPLEMENTATION -->
+    <cc:implementation>
+
+        <h:form prependId="false">
+             
+            <h:panelGroup id="panelGroupGrupoProdutoEditor" layout="block" >
+                <p:dataTable id="dataTableGrupoProd" widgetVar="dataTableGrupoProd"  var="grupoProd" style="font-size: 12px;" value="#{grupoProdutoMB.lista}"
+                             paginator="true"
+                             paginatorTemplate="{PageLinks}"
+                             rows="10">
+                    <p:column headerText="Descrição" >
+                        <h:outputText value="#{grupoProd.descricao}" />
+                    </p:column>
+
+                    <p:column>
+                        <h:commandButton value="edit" > 
+                            <f:ajax onevent="grupoProdleteGrupoProd"   listener="#{grupoProdutoMB.setObj(grupoProd)}" execute="@this" render=":cadGrupoProd:panelGridDados"/>    
+                        </h:commandButton>
+                    </p:column>
+                    <p:column>
+                        <h:commandButton value="remove"  > 
+                            <f:ajax   listener="#{grupoProdutoMB.remove(grupoProd)}"  execute="panelGroupGrupoProdutoEditor" render="cadGrupoProd:panelGroupGrupoProdutoEditor"/>                  
+                        </h:commandButton>
+                    </p:column>
+
+                    <f:facet name="footer">
+                        <h:commandLink class="btn btn-default"  actionListener="#{grupoProdutoMB.novo()}" title="Novo Registro">
+                            <i class="fa fa-star fa-fw"></i>
+                            <f:ajax  onevent="grupoProdleteGrupoProd"  execute=":cadGrupoProd:panelGridDados" render=":cadGrupoProd:panelGridDados"/>
+
+                            <script>
+                                function grupoProdleteGrupoProd(e) {
+                                    if (e.status == "success")
+                                        $('#cadGrupoProdModal').modal('show');
+                                }
+                            </script>
+                        </h:commandLink>
+                    </f:facet>
+
+                </p:dataTable>
+
+            </h:panelGroup>
+        </h:form>
+
+
+        <!--modal-->
+        <div   id="cadGrupoProdModal" class="modal fade" ps:role="dialog" >
+            <h:form prependId="false">
+                <h:panelGroup layout="block"  class="modal-dialog">
+                    <h:panelGroup layout="block"  class="modal-content">
+                        <h:panelGroup layout="block"  class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                            <h4 class="modal-title">Modal title</h4>
+                        </h:panelGroup>
+                        <h:panelGroup id="panelGridDados" layout="block"  class="modal-body">
+
+                            <h:panelGroup layout="block"  class="form-group">
+                                <h:outputLabel class="control-label" for="inputTextDescGrupoProd" value="Descricao"/>
+                                <h:inputText class="form-control" id="inputTextDescGrupoProd" value="#{grupoProdutoMB.obj.descricao}" >
+                                </h:inputText>
+                                <component:message1 target="inputTextDescGrupoProd"></component:message1>
+                            </h:panelGroup>
+                        </h:panelGroup>
+
+                        <h:panelGroup layout="block"  class="modal-footer">
+                            <a id="closeDialogGrupoProd" class="btn btn-default" data-dismiss="modal">Close</a>
+
+                            <h:commandButton class="btn btn-primary" value="Salvar" id="btnSubmitGrupoProd"   >
+                                <f:ajax execute="panelGridDados" onevent="grupoProdleteGrupoProdSave" listener="#{grupoProdutoMB.save()}"  render="panelGridDados :cadGrupoProd:panelGroupGrupoProdutoEditor" />
+                                <script>
+                                    function grupoProdleteGrupoProdSave(e) {
+                                        if (e.status == "success")
+                                            $('#cadGrupoProdModal').modal('hide');
+                                    }
+                                </script>
+                            </h:commandButton>
+                        </h:panelGroup>
+
+                    </h:panelGroup>
+                </h:panelGroup>
+            </h:form>
+        </div>
+ 
+        <script>            $("#cadGrupoProdModal").on("shown.bs.modal", function () {
+                $("#cadGrupoProd\\:inputTextDescGrupoProd").focus();
+            });</script>
+
+    </cc:implementation>
+</html>

@@ -2,10 +2,11 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:cc="http://xmlns.jcp.org/jsf/composite"
-      xmlns:co="http://xmlns.jcp.org/jsf/composite/component"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:f="http://xmlns.jcp.org/jsf/core"
-      xmlns:p="http://primefaces.org/ui">
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ps="http://xmlns.jcp.org/jsf/passthrough"
+      xmlns:component="http://xmlns.jcp.org/jsf/composite/component">
 
     <!-- INTERFACE -->
     <cc:interface>
@@ -14,73 +15,157 @@
     <!-- IMPLEMENTATION -->
     <cc:implementation>
 
-        <h:panelGroup id="panelGroupProductEditor" layout="block" class="container">
-            <h:panelGroup layout="block" class="row"> 
+        <h:form prependId="false">
+            <h:panelGroup id="panelGroupProdutoEditor" layout="block" >
+                <p:dataTable id="dataTableProd" widgetVar="dataTableProd"  var="prod" style="font-size: 12px;" value="#{produtoMB.lista}"
+                             paginator="true"
+                             paginatorTemplate="{PageLinks}"
+                             rows="10">
+                    <p:column headerText="Descrição" >
+                        <h:outputText value="#{prod.descricao}" />
+                    </p:column>
 
-                <h:panelGroup id="panelGroupImgProd" layout="block" class="col-md-4" style="min-height: 240px;">
-                    <h:panelGroup layout="block" class="row" style="min-height: 120px;">
-                        <h:panelGroup  layout="block" class="col-md-4" style="min-height: 120px; border-style: dotted; border-width: 1px;">
-                            
-                            <h:form  prependId="false" enctype="multipart/form-data">
-         
-                            </h:form>
+                    <p:column>
+                        <h:commandButton value="edit" > 
+                            <f:ajax onevent="prodleteProd"   listener="#{produtoMB.setObj(prod)}" execute="@this" render=":cadProd:panelGridDados"/>    
+                        </h:commandButton>
+                    </p:column>
+                    <p:column>
+                        <h:commandButton value="remove"  > 
+                            <f:ajax   listener="#{produtoMB.remove(prod)}"  execute="panelGroupProdutoEditor" render="cadProd:panelGroupProdutoEditor"/>                  
+                        </h:commandButton>
+                    </p:column>
 
-                        </h:panelGroup>
-                        <h:panelGroup  layout="block" class="col-md-4" style="min-height: 120px;border-style: dotted; border-width: 1px;">
+                    <f:facet name="footer">
+                        <h:commandLink class="btn btn-default"  actionListener="#{produtoMB.novo()}" title="Novo Registro">
+                            <i class="fa fa-star fa-fw"></i>
+                            <f:ajax  onevent="prodleteProd"  execute=":cadProd:panelGridDados" render=":cadProd:panelGridDados"/>
 
-                        </h:panelGroup>
-                        <h:panelGroup  layout="block" class="col-md-4" style="min-height: 120px; border-style: dotted; border-width: 1px;">
+                            <script>
+                                function prodleteProd(e) {
+                                    if (e.status == "success")
+                                        $('#cadProdModal').modal('show');
+                                }
+                            </script>
+                        </h:commandLink>
+                    </f:facet>
 
-                        </h:panelGroup>
-                    </h:panelGroup>
-
-                    <h:panelGroup layout="block" class="row" style="min-height: 120px;">
-                        <h:panelGroup  layout="block" class="col-md-4" style="min-height: 120px; border-style: dotted; border-width: 1px;">
-
-                        </h:panelGroup>
-                        <h:panelGroup  layout="block" class="col-md-4" style="min-height: 120px; border-style: dotted; border-width: 1px;">
-
-                        </h:panelGroup>
-                        <h:panelGroup  layout="block" class="col-md-4" style="min-height: 120px; border-style: dotted; border-width: 1px;">
-
-                        </h:panelGroup>
-                    </h:panelGroup>
-                </h:panelGroup>
-
-                <h:form>
-
-                    <h:panelGroup  layout="block" class="col-md-8">
-
-                        <h:panelGroup layout="block"  class="form-group">
-                            <h:outputLabel class="control-label" for="inputTextDescProd" value="Descricao"/>
-                            <h:inputText class="form-control" id="inputTextDescProd" value="#{produtoMB.obj.descricao}" >
-                                <f:validateLength minimum="3" maximum="100"/>
-                            </h:inputText>
-                            <co:message1 target="inputTextDescProd"/>
-                        </h:panelGroup>
-
-
-                        <h:panelGroup layout="block"  class="form-group">
-                            <h:outputLabel class="control-label" for="inputTextTagsProd" value="Tags de busca"/>
-                            <h:inputText class="form-control" id="inputTextTagsProd"  value="#{produtoMB.obj.tag}" >
-                                <f:validateLength maximum="200"/>
-                            </h:inputText>
-                            <co:message1 target="inputTextTagsProd"/>
-                        </h:panelGroup>
-
-                        <h:panelGroup layout="block"  class="form-group">
-                            <h:outputLabel class="control-label" for="inputTextValProd" value="Tags de busca"/>
-                            <h:inputText class="form-control" id="inputTextValProd"  value="#{produtoMB.obj.valorPadrao}" >
-                                <f:convertNumber currencySymbol="R$"  type="currency"/>
-                            </h:inputText>
-                            <co:message1 target="inputTextValProd"/>
-                        </h:panelGroup>
-
-                    </h:panelGroup>
-
-                </h:form>
+                </p:dataTable>
 
             </h:panelGroup>
-        </h:panelGroup> 
+
+
+        </h:form>
+
+
+        <!--modal-->
+        <div   id="cadProdModal" class="modal fade" style="width: 90%" ps:role="dialog" >
+            <h:form prependId="false">
+                <h:panelGroup layout="block"  class="modal-dialog">
+                    <h:panelGroup layout="block"  class="modal-content">
+                        <h:panelGroup layout="block"  class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                            <h4 class="modal-title">Modal title</h4>
+                        </h:panelGroup>
+
+                        <h:panelGroup id="panelGridDados" layout="block"  class="modal-body">
+
+                            <!--body dos produtos-->
+                            <h:panelGroup layout="block" class="row"> 
+                                <h:form>
+
+                                    <h:panelGroup  layout="block" class="col-md-9">
+
+                                        <h:panelGroup layout="block"  class="form-group">
+                                            <h:outputLabel class="control-label" for="inputTextDescProd" value="Descricao"/>
+                                            <h:inputText class="form-control" id="inputTextDescProd" value="#{produtoMB.obj.descricao}" >
+                                                <f:validateLength minimum="3" maximum="100"/>
+                                            </h:inputText>
+                                            <component:message1 target="inputTextDescProd"/>
+                                        </h:panelGroup>
+
+
+                                        <h:panelGroup layout="block"  class="form-group">
+                                            <h:outputLabel class="control-label" for="inputTextTagsProd" value="Tags de busca"/>
+                                            <h:inputText class="form-control" id="inputTextTagsProd"  value="#{produtoMB.obj.tag}" >
+                                                <f:validateLength maximum="200"/>
+                                            </h:inputText>
+                                            <component:message1 target="inputTextTagsProd"/>
+                                        </h:panelGroup>
+
+                                        <h:panelGroup layout="block"  class="form-group">
+                                            <h:outputLabel class="control-label" for="inputTextValor" value="Valor"/>
+                                            <div class="input-group">
+                                                <div class="input-group-addon">R$</div>
+                                                <h:inputText class="form-control" id="inputTextValor"  value="#{produtoMB.obj.valorPadrao}" >
+                                                </h:inputText>
+                                            </div>
+                                            <component:message1 target="inputTextValor"/>
+                                        </h:panelGroup>
+
+                                        <h:panelGroup layout="block"  class="form-group">
+                                            <h:outputLabel class="control-label" for="selectGrupoProd" value="Grupo"/>
+                                            <h:selectOneMenu id="selectGrupoProd" class="form-control btn btn-default" converter="grupoProdutoConverter" value="#{produtoMB.obj.descricao}">
+                                                <f:selectItems  value="#{grupoProdutoMB.lista}" var="g" itemLabel="#{g.descricao}" itemValue="#{g}"/>
+                                            </h:selectOneMenu>
+                                        </h:panelGroup>
+
+                                        <h:panelGroup layout="block"  class="form-group">
+                                            <h:outputLabel class="control-label" for="pickListPadrao" value="Complementos principais"/>
+                                            <p:pickList  id="pickListPadrao" class="form-control"  var="comp" itemLabel="#{comp.descricao}" 
+                                                         itemValue="#{comp}" converter="complementoConverter" 
+                                                         value="#{produtoMB.dualListComplementoPadrao}"   showSourceFilter="true" showTargetFilter="true" filterMatchMode="contains" >
+                                             <f:facet name="sourceCaption">Disponível</f:facet>
+                                             <f:facet name="targetCaption">Adicionado</f:facet>
+                                            </p:pickList>
+                                        </h:panelGroup>
+                                        
+                                       <h:panelGroup layout="block"  class="form-group">
+                                            <h:outputLabel class="control-label" for="pickListAdicionais" value="Complementos adicionais"/>
+                                            <p:pickList  id="pickListAdicionais" class="form-control"  var="comp" itemLabel="#{comp.descricao}" 
+                                                         itemValue="#{comp}" converter="complementoConverter" 
+                                                         value="#{produtoMB.dualListComplementoAdiconal}"   showSourceFilter="true" showTargetFilter="true" filterMatchMode="contains" >
+                                             <f:facet name="sourceCaption">Disponível</f:facet>
+                                             <f:facet name="targetCaption">Adicionado</f:facet>
+                                            </p:pickList>
+                                        </h:panelGroup>
+
+
+
+
+
+
+                                    </h:panelGroup>
+
+                                </h:form>
+
+                            </h:panelGroup>
+
+
+                        </h:panelGroup>
+                        <!--fim body dos produtos-->
+                        <h:panelGroup layout="block"  class="modal-footer">
+                            <a id="closeDialogProd" class="btn btn-default" data-dismiss="modal">Close</a>
+
+                            <h:commandButton class="btn btn-primary" value="Salvar" id="btnSubmitProd"   >
+                                <f:ajax execute="panelGridDados" onevent="prodleteProdSave" listener="#{produtoMB.save()}"  render="panelGridDados :cadProd:panelGroupProdutoEditor" />
+                                <script>
+                                    function prodleteProdSave(e) {
+                                        if (e.status == "success")
+                                            $('#cadProdModal').modal('hide');
+                                    }
+                                </script>
+                            </h:commandButton>
+                        </h:panelGroup>
+
+                    </h:panelGroup>
+                </h:panelGroup>
+            </h:form>
+        </div>
+
+        <script>            $("#cadProdModal").on("shown.bs.modal", function () {
+                $("#cadProd\\:inputTextDescProd").focus();
+            });</script>
+   
     </cc:implementation>
 </html>

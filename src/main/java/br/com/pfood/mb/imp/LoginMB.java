@@ -12,8 +12,8 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.util.ResourceBundle;
 import javax.annotation.PostConstruct;
+import javax.enterprise.context.RequestScoped;
 import javax.faces.context.FacesContext;
-import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 
@@ -21,7 +21,7 @@ import javax.inject.Named;
  *
  */
 @Named(value = "loginMB")
-@ViewScoped
+@RequestScoped
 public class LoginMB extends GenericMBImp<Usuario> implements Serializable {
 
     /**
