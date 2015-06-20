@@ -4,8 +4,9 @@
  * and open the template in the editor.
  */
 
-package br.com.pfood.bo;
+package br.com.pfood.dao;
 
+import br.com.pfood.enumerated.ProdutoComplementoTipoEnum;
 import br.com.pfood.model.Produto;
 import br.com.pfood.model.ProdutoComplemento;
 import java.util.List;
@@ -15,9 +16,7 @@ import java.util.List;
  * @author r.palazzio
  */
 
-public interface ProdutoBO  extends GenericBO{
-    public List<ProdutoComplemento> listaComplementosPadrao(Produto produto);
-    public List<ProdutoComplemento> listaComplementosAdicional(Produto produto);
-    public List<ProdutoComplemento> listaComplementosOpcional(Produto produto);
+public interface ProdutoDAO extends GenericDAO{
     
+    public List<ProdutoComplemento> listaComplementos(Produto produto , ProdutoComplementoTipoEnum tipo);
 }

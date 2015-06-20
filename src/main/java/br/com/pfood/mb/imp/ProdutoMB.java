@@ -14,6 +14,7 @@ import br.com.pfood.model.Usuario;
 import br.com.pfood.util.Encrypt;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 import javax.annotation.PostConstruct;
 import javax.enterprise.event.Observes;
 import javax.faces.event.ActionEvent;
@@ -111,5 +112,15 @@ public class ProdutoMB extends GenericMBImp<Produto>{
       this.montaDualListComplemento(complemento);
   }
 
+  public void setProduto(Produto  p){
+      super.obj  = p;
+      listaTargetComplementoPadrao = produtoBO.listaComplementosPadrao(p)
+              .stream().map(pc -> pc.getComplemento())
+              .collect(Collectors.toList());
+       listaTargetComplementoAdicional = produtoBO.listaComplementosAdicional(p)
+              .stream().map(pc -> pc.getComplemento())
+              .collect(Collectors.toList());
+      
+  }
     
 }

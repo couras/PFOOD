@@ -5,10 +5,13 @@
  */
 package br.com.pfood.model;
 
+import br.com.pfood.enumerated.ProdutoComplementoTipoEnum;
 import java.io.Serializable;
 import java.util.Objects;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.ForeignKey;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -47,7 +50,8 @@ public class ProdutoComplemento implements Serializable{
     private Integer sequencia;
     
     @Column(name = "tipo")//1 - Padrao - 2 - Adicional - 3 -selecao
-    private Integer tipo;
+    @Enumerated(EnumType.STRING)
+    private ProdutoComplementoTipoEnum tipo;
     
     @Column(name = "descricaoAgrupamento")
     private String descricaoAgrupamento;
@@ -100,13 +104,14 @@ public class ProdutoComplemento implements Serializable{
         this.sequencia = sequencia;
     }
 
-    public Integer getTipo() {
+    public ProdutoComplementoTipoEnum getTipo() {
         return tipo;
     }
 
-    public void setTipo(Integer tipo) {
+    public void setTipo(ProdutoComplementoTipoEnum tipo) {
         this.tipo = tipo;
     }
+
 
     public String getDescricaoAgrupamento() {
         return descricaoAgrupamento;
