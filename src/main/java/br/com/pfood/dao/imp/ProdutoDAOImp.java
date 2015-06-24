@@ -30,7 +30,7 @@ public class ProdutoDAOImp extends GenericDAOImp implements ProdutoDAO , Seriali
             
         Criteria c  =  super.getSession().createCriteria(ProdutoComplemento.class , "pc")
                 .add(Restrictions.eq("pc.produto", produto))
-                .add(Restrictions.eq("pc.tipo", tipo))
+                .add(Restrictions.eq("pc.tipo", tipo.getTipo()))
                 .addOrder(Order.asc("pc.sequencia"));
         if(c.list()!=null && !c.list().isEmpty()){
             return c.list();

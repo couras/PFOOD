@@ -7,6 +7,7 @@ package br.com.pfood.mb.imp;
 
 import br.com.pfood.bo.GenericBO;
 import br.com.pfood.mb.GenericMB;
+import br.com.pfood.model.Produto;
 import br.com.pfood.util.CdiUtils;
 import br.com.pfood.util.MessageUtil;
 import java.io.Serializable;
@@ -37,7 +38,7 @@ public abstract class GenericMBImp<T> implements GenericMB, Serializable {
     protected BeanManager beanManager;
 
     @Inject @Any private Event<List<T>> eventList;
-
+    @Inject @Any Event<T> evtObj;
     public Event<List<T>> getEventList() {
         return eventList;
     }
@@ -101,6 +102,7 @@ public abstract class GenericMBImp<T> implements GenericMB, Serializable {
 
     public void setObj(T obj) {
         this.obj = obj;
+        evtObj.fire(obj);
     }
 
     public List<T> getLista() {
@@ -131,6 +133,7 @@ public abstract class GenericMBImp<T> implements GenericMB, Serializable {
                 }
             }
             eventList.fire(lista);
+            evtObj.fire(obj);
         } catch (Exception ex) {
             logger.error(ex.getMessage());
             messageUtil.addMenssageError(ex.getMessage());
@@ -151,6 +154,8 @@ public abstract class GenericMBImp<T> implements GenericMB, Serializable {
                 genericBO.remove(obj);
             }
            eventList.fire(lista);
+           novo();
+           evtObj.fire(obj);
         } catch (Exception ex) {
             logger.error(ex.getMessage());
             messageUtil.addMenssageError(ex.getMessage());
@@ -183,6 +188,7 @@ public abstract class GenericMBImp<T> implements GenericMB, Serializable {
     public void novo() {
         try {
             this.obj = classe.newInstance();
+            evtObj.fire(obj);
         } catch (Exception ex) {
             ex.printStackTrace();
         }

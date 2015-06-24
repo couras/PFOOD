@@ -9,38 +9,55 @@
                 xmlns:componentes="http://xmlns.jcp.org/jsf/composite/componentes">
 
     <ui:define name="conteudo">
-        <div class="row">
-            <div class="col-md-4">
+        <div class="container-fluid">
+
+            <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
                 <div class="panel panel-primary">
-                    <div class="panel-heading">
-                        <h3 class="panel-title">Grupos do menu</h3>
+                    <div class="panel-heading" role="tab" id="headingOne">
+                        <h4 class="panel-title">
+                            <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
+                                Grupos do menu
+                            </a>
+                        </h4>
                     </div>
-                    <div class="panel-body">
-                        <componentes:cadGrupoProduto id="cadGrupoProd"/>
+                    <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+                        <div class="panel-body">
+                            <componentes:cadGrupoProduto id="cadGrupoProd"/>
+                        </div>
                     </div>
                 </div>
+                <div class="panel panel-primary">
+                    <div class="panel-heading" role="tab" id="headingTwo">
+                        <h4 class="panel-title">
+                            <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                                Complementos de produto
+                            </a>
+                        </h4>
+                    </div>
+                    <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+                        <div class="panel-body">
+                            <componentes:cadComplementos id="cadComp"/>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel panel-primary">
+                    <div class="panel-heading" role="tab" id="headingThree">
+                        <h4 class="panel-title ">
+                            <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                                Produtos
+                            </a>
+                        </h4>
+                    </div>
+                    <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+                        <div class="panel-body">
+                            <componentes:cadProduto id="cadProd"/>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
-            </div>    
-            <div class="col-md-8">
-                 <div class="panel panel-primary">
-                    <div class="panel-heading">
-                        <h3 class="panel-title">Componentes dos produtos</h3>
-                    </div>
-                    <div class="panel-body">
-                        <componentes:cadComplementos id="cadComp"/>
-                    </div>
-                 </div>
-            </div>
-            <div class="col-md-12">
-                <hr/>
-            </div>
         </div>
 
-        <div class="row">
-            <div class="col-md-8">
-                <componentes:cadProduto id="cadProd"/>
-            </div>    
-        </div>
 
     </ui:define>               
 

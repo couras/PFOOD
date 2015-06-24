@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.ForeignKey;
@@ -14,11 +15,15 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import org.hibernate.annotations.BatchSize;
 import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+import org.hibernate.annotations.Where;
 
 @Entity
 @Table(name = "produto")
@@ -59,6 +64,20 @@ public class Produto implements Serializable {
     @Column(name = "data_inclusao")
     private Date dataInclusao;
 
+    @OneToMany(cascade = CascadeType.ALL , mappedBy = "produto" )
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    @Where(clause = "tipo = 1")
+    private List<ProdutoComplemento> listacomplementoPadrao  = new ArrayList<ProdutoComplemento>();
+
+    public List<ProdutoComplemento> getListacomplementoPadrao() {
+        return listacomplementoPadrao;
+    }
+
+    public void setListacomplementoPadrao(List<ProdutoComplemento> listacomplementoPadrao) {
+        this.listacomplementoPadrao = listacomplementoPadrao;
+    }
+    
+    
     public int getIdProduto() {
         return idProduto;
     }

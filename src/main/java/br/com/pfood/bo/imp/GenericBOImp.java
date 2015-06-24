@@ -78,6 +78,7 @@ public abstract class GenericBOImp implements GenericBO , Serializable{
              list = dao.getPorAtributosIguais(obj, order);
         } catch (Exception ex) {
            logger.error(ex);
+           ex.printStackTrace();
         }
         return list;
     }

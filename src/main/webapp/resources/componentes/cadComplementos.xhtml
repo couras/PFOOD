@@ -41,92 +41,83 @@
                     </p:column>
                     <p:column>
                         <h:commandButton value="remove"  > 
-                            <f:ajax   listener="#{complementoMB.remove(comp)}"  execute="panelGroupComplementoEditor" render="cadComp:panelGroupComplementoEditor"/>                  
+                            <f:ajax   listener="#{complementoMB.remove(comp)}"  execute="@this" render="cadComp:panelGroupComplementoEditor :cadComp:panelGridDados"/>                  
                         </h:commandButton>
                     </p:column>
 
                     <f:facet name="footer">
-                        <h:commandButton class="btn btn-default" actionListener="#{complementoMB.novo()}">
-                            <f:ajax  onevent="completeComp"  execute=":cadComp:panelGridDados" render=":cadComp:panelGridDados"/>
+                        <h:commandLink class="btn btn-default"  actionListener="#{complementoMB.novo()}" title="Novo Registro" value="Novo">
+                            <i class="fa fa-star fa-fw"></i>
+                            <f:ajax  onevent="completeComp"  execute="@this" render=":cadComp:panelGridDados"/>
+
 
                             <script>
                                 function completeComp(e) {
-                                    if (e.status == "success")
-                                        $('#cadCompModal').modal('show');
+                                    $('#cadComplementoProdToggle').collapse('show');
+                                    focus("#cadComp\\:inputTextDescComp");
                                 }
                             </script>
-                        </h:commandButton>
+                        </h:commandLink>
                     </f:facet>
 
                 </p:dataTable>
             </h:panelGroup>
         </h:form>
 
-
+<hr/>
         <!--modal-->
-        <div   id="cadCompModal" class="modal fade modal-lg" ps:role="dialog" >
+        <div   id="cadComplementoProdToggle" class="collapse">
             <h:form prependId="false">
-                <h:panelGroup layout="block"  class="modal-dialog">
-                    <h:panelGroup layout="block"  class="modal-content">
-                        <h:panelGroup layout="block"  class="modal-header">
-                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                            <h4 class="modal-title">Modal title</h4>
-                        </h:panelGroup>
-                        <h:panelGroup id="panelGridDados" layout="block"  class="modal-body">
+                <div class="panel panel-primary">
+                    <div class="panel-heading">
+                        <button type="button" class="close" onclick="$('#cadComplementoProdToggle').collapse('hide')" aria-hidden="true">×</button>
+                        <h4 class="modal-title">Modal title</h4>
+                    </div>
+                    <h:panelGroup id="panelGridDados" layout="block"  class="panel-body">
 
-                            <h:panelGroup layout="block"  class="form-group">
-                                <h:outputLabel class="control-label" for="inputTextDescComp" value="Descricao"/>
-                                <h:inputText class="form-control" id="inputTextDescComp" value="#{complementoMB.obj.descricao}" >
+                        <h:panelGroup layout="block"  class="form-group">
+                            <h:outputLabel class="control-label" for="inputTextDescComp" value="Descricao"/>
+                            <h:inputText class="form-control" id="inputTextDescComp" value="#{complementoMB.obj.descricao}" >
+                            </h:inputText>
+                            <co:message1 target="inputTextDescComp"/>
+                        </h:panelGroup>
+
+
+                        <h:panelGroup layout="block"  class="form-group">
+                            <h:outputLabel class="control-label" for="inputTextValor" value="Valor Adiciona"/>
+                            <div class="input-group">
+                                <div class="input-group-addon">R$</div>
+                                <h:inputText class="form-control" id="inputTextValor"  value="#{complementoMB.obj.valorAdiciona}" >
                                 </h:inputText>
-                                <co:message1 target="inputTextDescComp"/>
-                            </h:panelGroup>
-
-
-                            <h:panelGroup layout="block"  class="form-group">
-                                <h:outputLabel class="control-label" for="inputTextValor" value="Valor Adiciona"/>
-                                <div class="input-group">
-                                    <div class="input-group-addon">R$</div>
-                                    <h:inputText class="form-control" id="inputTextValor"  value="#{complementoMB.obj.valorAdiciona}" >
-                                    </h:inputText>
-                                </div>
-                                <co:message1 target="inputTextValor"/>
-                            </h:panelGroup>
-
-                            <h:panelGroup layout="block"  class="form-group">
-                                <h:outputLabel class="control-label" for="inputTextValorRemove" value="Valor Remove"/>
-                                <div class="input-group">
-                                    <div class="input-group-addon">R$</div>
-                                    <h:inputText class="form-control" id="inputTextValorRemove"  value="#{complementoMB.obj.valorRemover}" >
-                                    </h:inputText>
-                                </div>
-                                <co:message1 target="inputTextValorRemove"/>
-                            </h:panelGroup>
-                            
-                         
+                            </div>
+                            <co:message1 target="inputTextValor"/>
                         </h:panelGroup>
 
-                        <h:panelGroup layout="block"  class="modal-footer">
-                            <a id="closeDialogComp" class="btn btn-default" data-dismiss="modal">Close</a>
-
-                            <h:commandButton class="btn btn-primary" value="Salvar" id="btnSubmitComp"   >
-                                <f:ajax execute="panelGridDados" onevent="completeCompSave" listener="#{complementoMB.save()}"  render="panelGridDados :cadComp:panelGroupComplementoEditor" />
-                                <script>
-                                    function completeCompSave(e) {
-                                        if (e.status == "success")
-                                            $('#cadCompModal').modal('hide');
-                                    }
-                                </script>
-                            </h:commandButton>
+                        <h:panelGroup layout="block"  class="form-group">
+                            <h:outputLabel class="control-label" for="inputTextValorRemove" value="Valor Remove"/>
+                            <div class="input-group">
+                                <div class="input-group-addon">R$</div>
+                                <h:inputText class="form-control" id="inputTextValorRemove"  value="#{complementoMB.obj.valorRemover}" >
+                                </h:inputText>
+                            </div>
+                            <co:message1 target="inputTextValorRemove"/>
                         </h:panelGroup>
+
 
                     </h:panelGroup>
-                </h:panelGroup>
+
+                    <h:panelGroup layout="block"  class="modal-footer">
+
+                        <h:commandButton class="btn btn-primary" value="Salvar" id="btnSubmitComp"   >
+                            <f:ajax execute="panelGridDados" onevent="completeComp" listener="#{complementoMB.save()}"  render="panelGridDados :cadComp:panelGroupComplementoEditor" />
+
+                        </h:commandButton>
+                    </h:panelGroup>
+
+                    </div>
+                
             </h:form>
         </div>
-
-        <script>            $("#cadCompModal").on("shown.bs.modal", function () {
-                $("#cadComp\\:inputTextDescComp").focus();
-            });</script>
 
     </cc:implementation>
 </html>

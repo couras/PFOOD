@@ -39,4 +39,63 @@ if (e.keyCode == 13) {
 }
 });
 
-        
+function myfocus(id) {$(id).focus();}  
+
+//$(function() {
+//    var action;
+//    $(".number-spinner a").mousedown(function () {
+//        btn = $(this);
+//        input = btn.closest('.number-spinner').find('input');
+//        btn.closest('.number-spinner').find('a').prop("disabled", false);
+//
+//    	if (btn.attr('data-dir') == 'up') {
+//            action = setInterval(function(){
+//                if ( input.attr('max') == undefined || parseInt(input.val()) < parseInt(input.attr('max')) ) {
+//                    input.val(parseInt(input.val())+1);
+//                }else{
+//                    btn.prop("disabled", true);
+//                    clearInterval(action);
+//                }
+//            } ,200);
+//    	} else {
+//            action = setInterval(function(){
+//                if ( input.attr('min') == undefined || parseInt(input.val()) > parseInt(input.attr('min')) ) {
+//                    input.val(parseInt(input.val())-1);
+//                }else{
+//                    btn.prop("disabled", true);
+//                    clearInterval(action);
+//                }
+//            } , 300);
+//    	}
+//    }).mouseup(function(){
+//        clearInterval(action);
+//    });
+//});
+
+function spninnerbtnactive() {
+    $(".number-spinner a").click( function () {
+        btn = $(this);
+        input = btn.closest('.number-spinner').find('input');
+        btn.closest('.number-spinner').find('a').prop("disabled", false);
+
+        if (btn.attr('data-dir') == 'up') {
+
+            if (input.attr('max') == undefined || parseInt(input.val()) < parseInt(input.attr('max'))) {
+                input.val(parseInt(input.val()) + 1);
+            } else {
+                btn.prop("disabled", true);
+                clearInterval(action);
+            }
+        } else {
+
+            if (input.attr('min') == undefined || parseInt(input.val()) > parseInt(input.attr('min'))) {
+                input.val(parseInt(input.val()) - 1);
+            } else {
+                btn.prop("disabled", true);
+                clearInterval(action);
+            }
+        }
+    });
+
+};
+    

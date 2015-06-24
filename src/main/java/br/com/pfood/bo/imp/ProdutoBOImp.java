@@ -29,6 +29,16 @@ public class ProdutoBOImp  extends GenericBOImp implements ProdutoBO , Serializa
 
     @Inject transient Logger logger;
     @Inject ProdutoDAO pdao;
+
+    public ProdutoDAO getPdao() {
+        return pdao;
+    }
+
+    public void setPdao(ProdutoDAO pdao) {
+        this.pdao = pdao;
+    }
+    
+    
     @PostConstruct
     public void init(){
         logger.debug("ProdutoBO construido");

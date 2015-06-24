@@ -16,7 +16,7 @@
     <cc:implementation>
 
         <h:form prependId="false">
-             
+
             <h:panelGroup id="panelGroupGrupoProdutoEditor" layout="block" >
                 <p:dataTable id="dataTableGrupoProd" widgetVar="dataTableGrupoProd"  var="grupoProd" style="font-size: 12px;" value="#{grupoProdutoMB.lista}"
                              paginator="true"
@@ -33,19 +33,20 @@
                     </p:column>
                     <p:column>
                         <h:commandButton value="remove"  > 
-                            <f:ajax   listener="#{grupoProdutoMB.remove(grupoProd)}"  execute="panelGroupGrupoProdutoEditor" render="cadGrupoProd:panelGroupGrupoProdutoEditor"/>                  
+                            <f:ajax   listener="#{grupoProdutoMB.remove(grupoProd)}"  execute="@this" render="cadGrupoProd:panelGroupGrupoProdutoEditor :cadGrupoProd:panelGridDados :cadProd:panelGridDados"/>                  
                         </h:commandButton>
                     </p:column>
 
                     <f:facet name="footer">
-                        <h:commandLink class="btn btn-default"  actionListener="#{grupoProdutoMB.novo()}" title="Novo Registro">
+                        <h:commandLink class="btn btn-default"  actionListener="#{grupoProdutoMB.novo()}" title="Novo Registro" value="Novo">
                             <i class="fa fa-star fa-fw"></i>
-                            <f:ajax  onevent="grupoProdleteGrupoProd"  execute=":cadGrupoProd:panelGridDados" render=":cadGrupoProd:panelGridDados"/>
+                            <f:ajax  onevent="grupoProdleteGrupoProd"  execute="@this" render=":cadGrupoProd:panelGridDados"/>
 
                             <script>
                                 function grupoProdleteGrupoProd(e) {
                                     if (e.status == "success")
-                                        $('#cadGrupoProdModal').modal('show');
+                                        $('#cadGrupoProdToggle').collapse('show')
+                                        focus("#cadGrupoProd\\:inputTextDescGrupoProd")
                                 }
                             </script>
                         </h:commandLink>
@@ -56,48 +57,39 @@
             </h:panelGroup>
         </h:form>
 
-
+<hr/>
         <!--modal-->
-        <div   id="cadGrupoProdModal" class="modal fade" ps:role="dialog" >
+        <div   id="cadGrupoProdToggle" class="collapse">
             <h:form prependId="false">
-                <h:panelGroup layout="block"  class="modal-dialog">
-                    <h:panelGroup layout="block"  class="modal-content">
-                        <h:panelGroup layout="block"  class="modal-header">
-                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                            <h4 class="modal-title">Modal title</h4>
+                <div class="panel panel-primary">
+                    <div class="panel-heading">
+                        <button type="button" class="close" onclick="$('#cadGrupoProdToggle').collapse('hide')" aria-hidden="true">×</button>
+                        <h4 class="panel-title">Dados do Grupo</h4>
+                    </div>
+                    <h:panelGroup id="panelGridDados" layout="block"  class="panel-body">
+
+                        <h:panelGroup layout="block"  class="form-group">
+                            <h:outputLabel class="control-label" for="inputTextDescGrupoProd" value="Descricao"/>
+                            <h:inputText class="form-control" id="inputTextDescGrupoProd" value="#{grupoProdutoMB.obj.descricao}" >
+                            </h:inputText>
+                            <component:message1 target="inputTextDescGrupoProd"></component:message1>
                         </h:panelGroup>
-                        <h:panelGroup id="panelGridDados" layout="block"  class="modal-body">
-
-                            <h:panelGroup layout="block"  class="form-group">
-                                <h:outputLabel class="control-label" for="inputTextDescGrupoProd" value="Descricao"/>
-                                <h:inputText class="form-control" id="inputTextDescGrupoProd" value="#{grupoProdutoMB.obj.descricao}" >
-                                </h:inputText>
-                                <component:message1 target="inputTextDescGrupoProd"></component:message1>
-                            </h:panelGroup>
-                        </h:panelGroup>
-
-                        <h:panelGroup layout="block"  class="modal-footer">
-                            <a id="closeDialogGrupoProd" class="btn btn-default" data-dismiss="modal">Close</a>
-
-                            <h:commandButton class="btn btn-primary" value="Salvar" id="btnSubmitGrupoProd"   >
-                                <f:ajax execute="panelGridDados" onevent="grupoProdleteGrupoProdSave" listener="#{grupoProdutoMB.save()}"  render="panelGridDados :cadGrupoProd:panelGroupGrupoProdutoEditor" />
-                                <script>
-                                    function grupoProdleteGrupoProdSave(e) {
-                                        if (e.status == "success")
-                                            $('#cadGrupoProdModal').modal('hide');
-                                    }
-                                </script>
-                            </h:commandButton>
-                        </h:panelGroup>
-
                     </h:panelGroup>
-                </h:panelGroup>
+
+                    <h:panelGroup layout="block"  class="panel-footer">
+
+                        <h:commandButton class="btn btn-primary" value="Salvar" id="btnSubmitGrupoProd"   >
+                            <f:ajax execute="panelGridDados"  listener="#{grupoProdutoMB.save()}"  render="panelGridDados :cadGrupoProd:panelGroupGrupoProdutoEditor :cadProd:panelGridDados" />
+
+                        </h:commandButton>
+                    </h:panelGroup>
+
+
+                </div>
+
             </h:form>
         </div>
- 
-        <script>            $("#cadGrupoProdModal").on("shown.bs.modal", function () {
-                $("#cadGrupoProd\\:inputTextDescGrupoProd").focus();
-            });</script>
+
 
     </cc:implementation>
 </html>

@@ -6,22 +6,22 @@
 
 package br.com.pfood.mb.imp;
 
+import br.com.pfood.bo.ComplementoBO;
 import br.com.pfood.bo.ProdutoBO;
-import br.com.pfood.enumerated.SituacaoEnum;
+import br.com.pfood.enumerated.ProdutoComplementoTipoEnum;
 import br.com.pfood.model.Complemento;
 import br.com.pfood.model.Produto;
+import br.com.pfood.model.ProdutoComplemento;
 import br.com.pfood.model.Usuario;
-import br.com.pfood.util.Encrypt;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 import javax.annotation.PostConstruct;
+import javax.enterprise.event.Event;
 import javax.enterprise.event.Observes;
-import javax.faces.event.ActionEvent;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
-import org.primefaces.context.RequestContext;
 import org.primefaces.model.DualListModel;
 
 
@@ -34,48 +34,20 @@ import org.primefaces.model.DualListModel;
 public class ProdutoMB extends GenericMBImp<Produto>{
     
     @Inject ProdutoBO produtoBO;
+    @Inject UsuarioLogadoMB usuarioLogado;
+    @Inject Event<Produto> evtPtoduto;
     private Usuario user  = null;
+            
 
-    private List<Complemento> listaTargetComplementoPadrao;
-    private List<Complemento> listaTargetComplementoAdicional;
-    
 
-    private DualListModel<Complemento> dualListComplementoPadrao;
-    private DualListModel<Complemento> dualListComplementoAdiconal;
 
-    public DualListModel<Complemento> getDualListComplementoPadrao() {
-        return dualListComplementoPadrao;
+    public Usuario getUser() {
+        return user;
     }
 
-    public void setDualListComplementoPadrao(DualListModel<Complemento> dualListComplementoPadrao) {
-        this.dualListComplementoPadrao = dualListComplementoPadrao;
+    public void setUser(Usuario user) {
+        this.user = user;
     }
-
-    public DualListModel<Complemento> getDualListComplementoAdiconal() {
-        return dualListComplementoAdiconal;
-    }
-
-    public void setDualListComplementoAdiconal(DualListModel<Complemento> dualListComplementoAdiconal) {
-        this.dualListComplementoAdiconal = dualListComplementoAdiconal;
-    }
-
-    public List<Complemento> getListaTargetComplementoPadrao() {
-        return listaTargetComplementoPadrao;
-    }
-
-    public void setListaTargetComplementoPadrao(List<Complemento> listaTargetComplementoPadrao) {
-        this.listaTargetComplementoPadrao = listaTargetComplementoPadrao;
-    }
-
-    public List<Complemento> getListaTargetComplementoAdicional() {
-        return listaTargetComplementoAdicional;
-    }
-
-    public void setListaTargetComplementoAdicional(List<Complemento> listaTargetComplementoAdicional) {
-        this.listaTargetComplementoAdicional = listaTargetComplementoAdicional;
-    }
-
-
 
     public ProdutoBO getProdutoBO() {
         return produtoBO;
@@ -85,42 +57,38 @@ public class ProdutoMB extends GenericMBImp<Produto>{
         this.produtoBO = produtoBO;
     }
 
- 
-    public Usuario getUser() {
-        return user;
+    public UsuarioLogadoMB getUsuarioLogado() {
+        return usuarioLogado;
     }
 
-    public void setUser(Usuario user) {
-        this.user = user;
+    public void setUsuarioLogado(UsuarioLogadoMB usuarioLogado) {
+        this.usuarioLogado = usuarioLogado;
     }
+
+ 
+
+
     
     
     @PostConstruct
     public void   init(){
         super.init(produtoBO);
         user = new Usuario();
-        listaTargetComplementoPadrao = new ArrayList<Complemento>();
-        listaTargetComplementoAdicional = new ArrayList<Complemento>();
-        this.montaDualListComplemento(new ArrayList<Complemento>());
+        super.getAll();
+
     }
 
-  private void montaDualListComplemento(List<Complemento> listaSourceComplemento){
-      this.dualListComplementoAdiconal = new DualListModel<Complemento>(listaSourceComplemento , listaTargetComplementoAdicional);
-      this.dualListComplementoPadrao = new DualListModel<Complemento>(listaSourceComplemento , listaTargetComplementoPadrao);
-  }
-  public void listnerComplemento(@Observes List<Complemento> complemento){
-      this.montaDualListComplemento(complemento);
-  }
+    @Override
+    public void save(){
+        obj.setVendedor(usuarioLogado.getUsuario().getVendedor());
+        super.save();
+        evtPtoduto.fire(obj);
+              
+    }
 
   public void setProduto(Produto  p){
       super.obj  = p;
-      listaTargetComplementoPadrao = produtoBO.listaComplementosPadrao(p)
-              .stream().map(pc -> pc.getComplemento())
-              .collect(Collectors.toList());
-       listaTargetComplementoAdicional = produtoBO.listaComplementosAdicional(p)
-              .stream().map(pc -> pc.getComplemento())
-              .collect(Collectors.toList());
-      
+      evtPtoduto.fire(obj);
   }
     
 }

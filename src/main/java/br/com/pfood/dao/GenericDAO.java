@@ -8,7 +8,6 @@ package br.com.pfood.dao;
 
 import java.io.Serializable;
 import java.util.List;
-import javax.enterprise.inject.Typed;
 import org.hibernate.criterion.Order;
 
 /**
@@ -16,7 +15,7 @@ import org.hibernate.criterion.Order;
  * @author r.palazzio
  */
 
-public interface GenericDAO {
+public interface GenericDAO  {
     
     public <T extends Object> T save(T entity) throws Exception;
 

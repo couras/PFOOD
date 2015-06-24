@@ -1,0 +1,31 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:cc="http://xmlns.jcp.org/jsf/composite"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+       xmlns:ps="http://xmlns.jcp.org/jsf/passthrough">
+
+    <!-- INTERFACE -->
+    <cc:interface>
+        <cc:attribute name="ids" default="meuspiner" />
+        <cc:attribute name="label" default="meuspiner" />
+        <cc:attribute name="max" default="1000" />
+        <cc:attribute name="min" default="0" />
+        <cc:attribute name="value" />
+    </cc:interface>
+
+    <!-- IMPLEMENTATION -->
+    <cc:implementation>
+        <h:outputLabel class="control-label" for="#{cc.attrs.ids}" value="#{cc.attrs.label}"/>
+        <div class="input-group number-spinner col-sm-2 col-lg-1">
+            <span class="input-group-btn data-dwn">
+                <a class="btn btn-default btn-info" data-dir="dwn"><span class="glyphicon glyphicon-minus"></span></a>
+            </span>                                               
+            <h:inputText  class="form-control text-center" id="inputTextQtdeLimit" value="#{cc.attrs.value}" ps:min="#{cc.attrs.min}"  ps:max="#{cc.attrs.max}"/>
+            <span class="input-group-btn data-up">
+                <a class="btn btn-default btn-info" data-dir="up"><span class="glyphicon glyphicon-plus"></span></a>
+            </span>
+        </div>
+        <script>spninnerbtnactive()</script>
+    </cc:implementation>
+</html>
