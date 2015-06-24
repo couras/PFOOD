@@ -20,6 +20,7 @@ import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 import org.hibernate.criterion.Order;
+import org.primefaces.context.RequestContext;
 
 /**
  *
@@ -41,16 +42,22 @@ public class ProdutoComplementoMB extends GenericMBImp<ProdutoComplemento> {
 
     public void setAction(int action) {
         this.action = action;
+        novo();
+        ObjectUtil.preparaObjetoParaBusca(obj);
+        obj.setProduto(produto);
         switch (action) {
             case 1:
-                novo();
-                ObjectUtil.preparaObjetoParaBusca(obj);
-                obj.setProduto(produto);
-                obj.setTipo(action);
-                super.setLista(produtoComplementoBO.getPorAtributosIguais(obj, Order.asc("sequencia")));
-                novo();
+                obj.setTipo(1);
+                break;
+            case 2:
+                obj.setTipo(2);
                 break;
         }
+        if (produto != null && produto.getIdProduto() > 0) {
+            super.setLista(produtoComplementoBO.getPorAtributosIguais(obj, Order.asc("sequencia")));
+        }
+
+        novo();
     }
 
     public ProdutoComplementoBO getProdutoComplementoBO() {
