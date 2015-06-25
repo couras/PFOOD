@@ -16,14 +16,14 @@ import javax.persistence.TemporalType;
 
 @Entity
 @Table(name = "pais")
-public class Pais implements Serializable  {
+public class Pais implements Serializable {
 	
 	private static final long serialVersionUID = 1L;
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	@Column(name="id_pais")
-	private int idPais;
+	private Integer idPais = 0;
 	
 	@Column(name="nome", length = 60)
 	private String nome;
@@ -43,7 +43,7 @@ public class Pais implements Serializable  {
 		return idPais;
 	}
 
-	public void setIdPais(int idPais) {
+	public void setIdPais(Integer idPais) {
 		this.idPais = idPais;
 	}
 
@@ -102,4 +102,9 @@ public class Pais implements Serializable  {
 	}
 
 
+        @Override
+        public Pais clone() throws CloneNotSupportedException {
+            Pais clone  = (Pais)super.clone();
+            return clone;
+        }
 }

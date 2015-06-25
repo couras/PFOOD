@@ -1,5 +1,6 @@
 package br.com.pfood.model;
 
+import com.sun.corba.se.impl.orbutil.ObjectUtility;
 import java.io.Serializable;
 import java.util.Date;
 
@@ -118,6 +119,5 @@ public class Estado implements Serializable {
 			return false;
 		return true;
 	}
-
 
 }

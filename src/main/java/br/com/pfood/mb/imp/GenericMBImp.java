@@ -19,6 +19,7 @@ import javax.enterprise.event.Event;
 import javax.enterprise.inject.Any;
 import javax.enterprise.inject.spi.BeanManager;
 import javax.inject.Inject;
+import org.apache.commons.lang3.ObjectUtils;
 import org.apache.log4j.Logger;
 
 /**
@@ -78,6 +79,14 @@ public abstract class GenericMBImp<T> implements GenericMB, Serializable {
 
     public void setBeanManager(BeanManager beanManager) {
         this.beanManager = beanManager;
+    }
+
+    public Event<T> getEvtObj() {
+        return evtObj;
+    }
+
+    public void setEvtObj(Event<T> evtObj) {
+        this.evtObj = evtObj;
     }
 
     @Override

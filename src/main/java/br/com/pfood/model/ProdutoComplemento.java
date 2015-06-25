@@ -33,7 +33,7 @@ public class ProdutoComplemento implements Serializable{
     @Id
     @Column(name = "id_produto_complemento")
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Integer idProdutoComplemento;
+    private Integer idProdutoComplemento =0;
     
     @ManyToOne()
     @JoinColumn(name = "id_produto", nullable = false ,foreignKey = @ForeignKey(name = "pc_produto_fk"))
@@ -41,7 +41,7 @@ public class ProdutoComplemento implements Serializable{
     
     @ManyToOne()
     @JoinColumn(name = "id_complemento", nullable = false,  foreignKey = @ForeignKey(name = "pc_complemento_fk"))
-    private Complemento complemento;
+    private Complemento complemento = new Complemento();
     
     @Column(name = "quantidade", nullable = false)
     private Integer quantidade =1 ;

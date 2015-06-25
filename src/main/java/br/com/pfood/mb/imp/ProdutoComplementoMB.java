@@ -6,6 +6,7 @@
 package br.com.pfood.mb.imp;
 
 import br.com.pfood.bo.ProdutoComplementoBO;
+import br.com.pfood.enumerated.ProdutoComplementoTipoEnum;
 import br.com.pfood.model.Complemento;
 import br.com.pfood.model.Produto;
 import br.com.pfood.model.ProdutoComplemento;
@@ -36,13 +37,28 @@ public class ProdutoComplementoMB extends GenericMBImp<ProdutoComplemento> {
     private Produto produto;
     private int action = 0;
 
+    public List<Complemento> getListaComplemento() {
+        return listaComplemento;
+    }
+
+    public void setListaComplemento(List<Complemento> listaComplemento) {
+        this.listaComplemento = listaComplemento;
+    }
+
+    public Produto getProduto() {
+        return produto;
+    }
+
+    public void setProduto(Produto produto) {
+        this.produto = produto;
+    }
+
     public int getAction() {
         return action;
     }
 
     public void setAction(int action) {
         this.action = action;
-        novo();
         ObjectUtil.preparaObjetoParaBusca(obj);
         obj.setProduto(produto);
         switch (action) {
@@ -98,6 +114,10 @@ public class ProdutoComplementoMB extends GenericMBImp<ProdutoComplemento> {
 
         obj.setTipo(action);
         obj.setProduto(produto);
+        if(action==1)
+            obj.setDescricaoAgrupamento(ProdutoComplementoTipoEnum.PADRAO.getDescricao());
+        if(action==2)
+            obj.setDescricaoAgrupamento(ProdutoComplementoTipoEnum.ADICIONAL.getDescricao());
         super.save();
     }
 
