@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 
-package br.com.pfood.util.produces;
+package br.com.pfood.produces;
 
 import javax.enterprise.inject.Produces;
 import javax.faces.application.Application;

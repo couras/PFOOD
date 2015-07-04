@@ -10,10 +10,13 @@ import br.com.pfood.enumerated.ProdutoComplementoTipoEnum;
 import br.com.pfood.model.Complemento;
 import br.com.pfood.model.Produto;
 import br.com.pfood.model.ProdutoComplemento;
+import br.com.pfood.model.TipoAgrupamentoComplemento;
 import br.com.pfood.model.Usuario;
 import br.com.pfood.util.ObjectUtil;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import javax.annotation.PostConstruct;
 import javax.enterprise.event.Observes;
@@ -35,8 +38,35 @@ public class ProdutoComplementoMB extends GenericMBImp<ProdutoComplemento> {
     ProdutoComplementoBO produtoComplementoBO;
     private List<Complemento> listaComplemento = new ArrayList<Complemento>();
     private Produto produto;
-    private int action = 0;
+    private int action = 0; 
+    private List<TipoAgrupamentoComplemento> listaTipoAgrupamentoComplemento;
+    private TipoAgrupamentoComplemento tipoAgrupamentoComplemento;
+    private TipoAgrupamentoComplemento tipoAgrupamentoComplementoSelecionado;
 
+    public TipoAgrupamentoComplemento getTipoAgrupamentoComplementoSelecionado() {
+        return tipoAgrupamentoComplementoSelecionado;
+    }
+
+    public void setTipoAgrupamentoComplementoSelecionado(TipoAgrupamentoComplemento tipoAgrupamentoComplementoSelecionado) {
+        this.tipoAgrupamentoComplementoSelecionado = tipoAgrupamentoComplementoSelecionado;
+    }
+
+    public List<TipoAgrupamentoComplemento> getListaTipoAgrupamentoComplemento() {
+        return listaTipoAgrupamentoComplemento;
+    }
+
+    public void setListaTipoAgrupamentoComplemento(List<TipoAgrupamentoComplemento> listaTipoAgrupamentoComplemento) {
+        this.listaTipoAgrupamentoComplemento = listaTipoAgrupamentoComplemento;
+    }
+
+    public TipoAgrupamentoComplemento getTipoAgrupamentoComplemento() {
+        return tipoAgrupamentoComplemento;
+    }
+
+    public void setTipoAgrupamentoComplemento(TipoAgrupamentoComplemento tipoAgrupamentoComplemento) {
+        this.tipoAgrupamentoComplemento = tipoAgrupamentoComplemento;
+    }
+    
     public List<Complemento> getListaComplemento() {
         return listaComplemento;
     }
@@ -63,10 +93,13 @@ public class ProdutoComplementoMB extends GenericMBImp<ProdutoComplemento> {
         obj.setProduto(produto);
         switch (action) {
             case 1:
-                obj.setTipo(1);
+                obj.setTipo(ProdutoComplementoTipoEnum.PADRAO.getTipo());
                 break;
             case 2:
-                obj.setTipo(2);
+                obj.setTipo(ProdutoComplementoTipoEnum.ADICIONAL.getTipo());
+                break;
+            case 3:
+                obj.setTipo(ProdutoComplementoTipoEnum.OPCIONAL.getTipo());
                 break;
         }
         if (produto != null && produto.getIdProduto() > 0) {
@@ -107,6 +140,11 @@ public class ProdutoComplementoMB extends GenericMBImp<ProdutoComplemento> {
     public void init() {
         super.init(produtoComplementoBO);
         user = new Usuario();
+        listaTipoAgrupamentoComplemento = produtoComplementoBO.getAll(TipoAgrupamentoComplemento.class);
+        listaTipoAgrupamentoComplemento
+               .sort((t1 , t2) 
+                       -> t1.getIdTipoAgrupamentoComplemento().compareTo(t2.getIdTipoAgrupamentoComplemento()));
+        tipoAgrupamentoComplemento = new TipoAgrupamentoComplemento();
     }
 
     @Override
@@ -115,12 +153,34 @@ public class ProdutoComplementoMB extends GenericMBImp<ProdutoComplemento> {
         obj.setTipo(action);
         obj.setProduto(produto);
         if(action==1)
-            obj.setDescricaoAgrupamento(ProdutoComplementoTipoEnum.PADRAO.getDescricao());
+            obj.setTipoAgrupamentoComplemento(listaTipoAgrupamentoComplemento.get( 0 ));
         if(action==2)
-            obj.setDescricaoAgrupamento(ProdutoComplementoTipoEnum.ADICIONAL.getDescricao());
+            obj.setTipoAgrupamentoComplemento(listaTipoAgrupamentoComplemento.get( 1 ));
+        if(action==3){ // fazer verificacao do agrupamento,  inserir novo se nao houver
+            if(tipoAgrupamentoComplementoSelecionado == null ){
+                try { // cria o agrupamento
+                    tipoAgrupamentoComplemento.setIdTipoAgrupamentoComplemento(0);
+                    this.tipoAgrupamentoComplemento = produtoComplementoBO.save(tipoAgrupamentoComplemento);
+                    obj.setTipoAgrupamentoComplemento(tipoAgrupamentoComplemento);
+                    if(!listaTipoAgrupamentoComplemento.contains(tipoAgrupamentoComplemento))
+                        listaTipoAgrupamentoComplemento.add(tipoAgrupamentoComplemento);
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
+            }else{ // optou por um ja existente
+                obj.setTipoAgrupamentoComplemento(tipoAgrupamentoComplementoSelecionado);
+            }
+        }
         super.save();
+        this.setTipoAgrupamentoComplementoSelecionado(null);
+        this.setTipoAgrupamentoComplemento(new TipoAgrupamentoComplemento());
     }
 
+    public void setProdutocomplemento(ProdutoComplemento pc){
+        super.setObj(pc);
+        this.tipoAgrupamentoComplementoSelecionado = pc.getTipoAgrupamentoComplemento();
+    }
+    
     public List<Complemento> autoCompleteComplemento(String query) {
         return listaComplemento
                 .stream()

@@ -28,12 +28,15 @@
                             </h:commandLink>
                         </li>
                         <li role="presentation">
-                            <a href="#complementosAdicionais" aria-controls="complementosAdicionais" role="tab" data-toggle="tab">Complementos Opcionais</a></li>
-                        <!--                            <h:commandLink ps:href="#complementosAdicionais" ps:aria-controls="complementosAdicionais" role="tab" ps:data-toggle="tab" value="Complementos Adicionais">
-                        
-                                                    </h:commandLink>-->
-
-                        <li role="presentation"><a href="#complementosOpcionais" aria-controls="complementosOpcionais" role="tab" data-toggle="tab">Complementos Opcionais</a></li>
+                            <h:commandLink ps:href="#complementosAdicionais" ps:aria-controls="complementosAdicionais" role="tab" ps:data-toggle="tab" value="Complementos Adicionais">
+                                <f:ajax event="click" execute="@this" render=":cadProd:subCadProdComp:panelGroupCPAEditor :cadProd:subCadProdComp:panelGridDadosPadraoCpa" listener="#{produtoComplementoMB.setAction(2)}" />
+                            </h:commandLink>
+                        </li>
+                        <li role="presentation">
+                            <h:commandLink ps:href="#complementosOpcionais" ps:aria-controls="complementosOpcionais" role="tab" ps:data-toggle="tab" value="Complementos Opcionais">
+                                <f:ajax event="click" execute="@this" render=":cadProd:subCadProdComp:panelGroupCPOEditor :cadProd:subCadProdComp:panelGridDadosPadraoCpo" listener="#{produtoComplementoMB.setAction(3)}" />
+                            </h:commandLink>
+                        </li>
                         <li role="presentation"><a href="#imagens" aria-controls="imagens" role="tab" data-toggle="tab">Imagens</a></li>
 
                     </ul>
@@ -57,7 +60,7 @@
                                     </p:column>
                                     <p:column>
                                         <h:commandButton value="edit" > 
-                                            <f:ajax onevent="prodcompevt"   listener="#{produtoComplementoMB.setObj(cpp)}" execute="@this" render=":cadProd:subCadProdComp:panelGridDadosPadraoCpp"/>    
+                                            <f:ajax onevent="prodcompevt"   listener="#{produtoComplementoMB.setProdutocomplemento(cpp)}" execute="@this" render=":cadProd:subCadProdComp:panelGridDadosPadraoCpp"/>    
                                         </h:commandButton>
                                     </p:column>
                                     <p:column>
@@ -96,13 +99,7 @@
                                     </div>
                                     <h:panelGroup id="panelGridDadosPadraoCpp" layout="block"  class="panel-body">
 
-                                        <h:panelGroup layout="block"  class="form-group">
-                                            <div class="input-group number-spinner col-sm-12 col-lg-12">
-                                                <h:outputLabel class="control-label" for="inputTextDescricaoAgrupamento" value="Descricao"/>
-                                                <h:inputText class="form-control" id="inputTextDescricaoAgrupamento" value="#{produtoComplementoMB.obj.descricaoAgrupamento}" >
-                                                </h:inputText>
-                                            </div>    
-                                        </h:panelGroup>
+
                                         <h:panelGroup layout="block"  class="form-group">
 
                                             <h:outputLabel class="control-label" for="selectCpp" value="Complemento"/>
@@ -134,15 +131,192 @@
 
                             </div>
                         </div>
-
+                        <!-- FIM COMPLEMENTO PADRAO -->
                         <div role="tabpanel" class="tab-pane" id="complementosAdicionais">
 
+                            <h:panelGroup id="panelGroupCPAEditor" layout="block" >
+                                <p:dataTable id="dataTableComProdCpa"   var="cpa" style="font-size: 12px;" value="#{produtoComplementoMB.lista}"
+                                             paginator="true"
+                                             paginatorTemplate="{PageLinks}"
+                                             rows="10">
 
+
+                                    <p:column headerText="Complemento" >
+                                        <h:outputText value="#{cpa.complemento.descricao}" />
+                                    </p:column>
+                                    <p:column>
+                                        <h:commandButton value="edit" > 
+                                            <f:ajax onevent="prodcompevtA"   listener="#{produtoComplementoMB.setProdutocomplemento(cpa)}" execute="@this" render=":cadProd:subCadProdComp:panelGridDadosPadraoCpa"/>    
+                                        </h:commandButton>
+                                    </p:column>
+                                    <p:column>
+                                        <h:commandButton value="remove"  > 
+                                            <f:ajax   listener="#{produtoComplementoMB.remove(cpa)}"  execute="@this" render=":cadProd:subCadProdComp:panelGroupCPAEditor"/>                  
+                                        </h:commandButton>
+                                    </p:column>
+
+                                    <f:facet name="footer">
+                                        <h:commandLink class="btn btn-default"  actionListener="#{produtoComplementoMB.novo()}" title="Novo Registro" value="Novo">
+                                            <i class="fa fa-star fa-fw"></i>
+                                            <f:ajax  onevent="prodcompevtA"  execute="@this" render=":cadProd:subCadProdComp:panelGridDadosPadraoCpa"/>
+
+                                            <script>
+                                                function prodcompevtA(e) {
+                                                    if (e.status == "success")
+                                                        $('#subCadCompProdAToggle').collapse('show')
+                                                }
+                                            </script>
+                                        </h:commandLink>
+                                    </f:facet>
+
+                                </p:dataTable>
+
+                            </h:panelGroup>
+
+
+                            <hr/>
+                            <!--modal-->
+                            <div   id="subCadCompProdAToggle" class="collapse">
+
+                                <div class="panel panel-primary">
+                                    <div class="panel-heading">
+                                        <button type="button" class="close" onclick="$('#subCadCompProdAToggle').collapse('hide')" aria-hidden="true">×</button>
+                                        <h4 class="panel-title">Dados do Grupo</h4>
+                                    </div>
+                                    <h:panelGroup id="panelGridDadosPadraoCpa" layout="block"  class="panel-body">
+
+
+                                        <h:panelGroup layout="block"  class="form-group">
+
+                                            <h:outputLabel class="control-label" for="selectCpa" value="Complemento"/>
+                                            <h:selectOneMenu  id="selectCpa" class="form-control btn btn-default" converter="complementoConverter" value="#{produtoComplementoMB.obj.complemento}">
+                                                <f:selectItems value="#{produtoComplementoMB.listaComplemento}" var="c" itemLabel="#{c.descricao}" itemValue="#{c}"/>
+                                            </h:selectOneMenu>
+
+                                        </h:panelGroup>
+                                        <h:panelGroup layout="block"  class="form-group">
+                                            <co:spinner ids="spinQtdeA" label="Quantidade padrao" min="1" max="1000" value="#{produtoComplementoMB.obj.quantidade}"  />
+                                        </h:panelGroup>
+                                        <h:panelGroup layout="block"  class="form-group">
+                                            <co:spinner ids="inputTextQtdelimA" label="Quantidade maxima" min="0" max="1000" value="#{produtoComplementoMB.obj.quantidadeLimite}" />
+                                        </h:panelGroup>
+
+
+                                    </h:panelGroup>
+
+                                    <h:panelGroup layout="block"  class="panel-footer">
+
+                                        <h:commandButton class="btn btn-primary" value="Salvar" id="btnSubmitCpa"   >
+                                            <f:ajax execute="panelGridDadosPadraoCpa"  listener="#{produtoComplementoMB.save()}"  render="panelGridDadosPadraoCpa panelGroupCPAEditor" />
+                                        </h:commandButton>
+                                    </h:panelGroup>
+
+
+                                </div>
+
+
+                            </div>
+                        </div>
+
+                        <!-- FIM COMPLEMENTO ADICIONAL -->
+
+                        <div role="tabpanel" class="tab-pane" id="complementosOpcionais">
+
+                            <h:panelGroup id="panelGroupCPOEditor" layout="block" >
+                                <p:dataTable id="dataTableComProdCpo"   var="cpo" style="font-size: 12px;" value="#{produtoComplementoMB.lista}"
+                                             paginator="true"
+                                             paginatorTemplate="{PageLinks}"
+                                             rows="10">
+
+                                    <p:column headerText="Agrupamento" >
+                                        <h:outputText value="#{cpo.tipoAgrupamentoComplemento.descricao}" />
+                                    </p:column>
+                                    <p:column headerText="Complemento" >
+                                        <h:outputText value="#{cpo.complemento.descricao}" />
+                                    </p:column>
+                                    <p:column>
+                                        <h:commandButton value="edit" > 
+                                            <f:ajax onevent="prodcompevtO"   listener="#{produtoComplementoMB.setProdutocomplemento(cpo)}" execute="@this" render=":cadProd:subCadProdComp:panelGridDadosPadraoCpo"/>    
+                                        </h:commandButton>
+                                    </p:column>
+                                    <p:column>
+                                        <h:commandButton value="remove"  > 
+                                            <f:ajax   listener="#{produtoComplementoMB.remove(cpo)}"  execute="@this" render=":cadProd:subCadProdComp:panelGroupCPOEditor"/>                  
+                                        </h:commandButton>
+                                    </p:column>
+
+                                    <f:facet name="footer">
+                                        <h:commandLink class="btn btn-default"  actionListener="#{produtoComplementoMB.novo()}" title="Novo Registro" value="Novo">
+                                            <i class="fa fa-star fa-fw"></i>
+                                            <f:ajax  onevent="prodcompevtO"  execute="@this" render=":cadProd:subCadProdComp:panelGridDadosPadraoCpo"/>
+
+                                            <script>
+                                                function prodcompevtO(e) {
+                                                    if (e.status == "success")
+                                                        $('#subCadCompProdOToggle').collapse('show')
+                                                }
+                                            </script>
+                                        </h:commandLink>
+                                    </f:facet>
+
+                                </p:dataTable>
+
+                            </h:panelGroup>
+
+
+                            <hr/>
+                            <!--modal-->
+                            <div   id="subCadCompProdOToggle" class="collapse">
+
+                                <div class="panel panel-primary">
+                                    <div class="panel-heading">
+                                        <button type="button" class="close" onclick="$('#subCadCompProdOToggle').collapse('hide')" aria-hidden="true">×</button>
+                                        <h4 class="panel-title">Dados Complementos Adicionais</h4>
+                                    </div>
+                                    <h:panelGroup id="panelGridDadosPadraoCpo" layout="block"  class="panel-body">
+                                        
+                                        <h:panelGroup layout="block"  class="form-group">
+                                            <h:outputLabel class="control-label" for="selectTac" value="Agrupamento"/>
+                                            <h:selectOneMenu onchange="desabilitaComplementoNome()"  id="selectTac" class="form-control btn btn-default selectTipoAgrupamentoComplemento" converter="tipoAgrupamentoComplementoConverter" value="#{produtoComplementoMB.tipoAgrupamentoComplementoSelecionado}">
+                                                <f:selectItem  itemLabel="Selecione ou informe um novo agrupamento: " />
+                                                <f:selectItems  value="#{produtoComplementoMB.listaTipoAgrupamentoComplemento}" var="t" itemLabel="#{t.descricao}" itemValue="#{t}"/>
+                                            </h:selectOneMenu>
+                                            <h:outputLabel class="control-label nomeTipoProdutoComplemento" for="inputTextDescricaoAgrupamento" value="Descricao" rendered="#{produtoComplementoMB.tipoAgrupamentoComplementoSelecionado==null}"/>
+                                            <h:inputText  class="form-control nomeTipoProdutoComplemento" id="inputTextDescricaoAgrupamento" value="#{produtoComplementoMB.tipoAgrupamentoComplemento.descricao}" rendered="#{produtoComplementoMB.tipoAgrupamentoComplementoSelecionado==null}">
+                                                <f:validateLength minimum="2"/>
+                                            </h:inputText>    
+                                        </h:panelGroup>
+                                        <h:panelGroup layout="block"  class="form-group">
+                                            <h:outputLabel class="control-label" for="selectCpo" value="Complemento"/>
+                                            <h:selectOneMenu  id="selectCpo" class="form-control btn btn-default" converter="complementoConverter" value="#{produtoComplementoMB.obj.complemento}">
+                                                <f:selectItems value="#{produtoComplementoMB.listaComplemento}" var="c" itemLabel="#{c.descricao}" itemValue="#{c}"/>
+                                            </h:selectOneMenu>
+                                        </h:panelGroup>
+                                        <h:panelGroup layout="block"  class="form-group">
+                                            <co:spinner ids="spinQtdeO" label="Quantidade padrao" min="1" max="1000" value="#{produtoComplementoMB.obj.quantidade}"  />
+                                        </h:panelGroup>
+                                        <h:panelGroup layout="block"  class="form-group">
+                                            <co:spinner ids="inputTextQtdelimO" label="Quantidade maxima" min="0" max="1000" value="#{produtoComplementoMB.obj.quantidadeLimite}" />
+                                        </h:panelGroup>
+
+
+                                    </h:panelGroup>
+
+                                    <h:panelGroup layout="block"  class="panel-footer">
+
+                                        <h:commandButton class="btn btn-primary" value="Salvar" id="btnSubmitCpo"   >
+                                            <f:ajax execute="panelGridDadosPadraoCpo"  listener="#{produtoComplementoMB.save()}"  render="panelGridDadosPadraoCpo panelGroupCPOEditor" />
+                                        </h:commandButton>
+                                    </h:panelGroup>
+
+
+                                </div>
+
+
+                            </div>
 
                         </div>
 
-
-                        <div role="tabpanel" class="tab-pane" id="complementosOpcionais">...</div>
                         <div role="tabpanel" class="tab-pane" id="imagens">...</div>
                     </div>
                 </h:panelGroup>

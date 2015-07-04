@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition  xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui" 
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:co="http://xmlns.jcp.org/jsf/composite/componentes"
+       template="/template/templateNoLogin.xhtml">
+
+    <ui:define name="conteudo">
+
+  
+            <hr/>
+            <div id="fileName"></div>
+            <div id="fileSize"></div>
+            <div id="fileType"></div>
+            <hr/>
+            <h:form  id="fileToUploadForm"  enctype="multipart/form-data">
+                <h:inputFile id="fileToUpload"  value="#{fileUploadBean.uploadedFile}">
+                </h:inputFile>    
+                <h:commandLink value="iniciar">
+                    <f:ajax execute="@form" render="@form" listener="#{fileUploadBean.teste1()}" onevent="teste" />
+                </h:commandLink>
+                <script>
+                    function teste(data){
+                       var a =  data;
+                       a.status;
+                    }
+                </script>
+            </h:form>          
+            <hr/> 
+            <div id="uploadStatus"></div>
+            <table>
+                <tr>
+                    <td>
+                        <progress id="progressBar" style="visibility: hidden;" 
+                                  value="0" max="100"></progress> 
+                    </td>                   
+                    <td>                    
+                        <div id="progressNumber" style="visibility: hidden;">0 %</div>
+                    </td>
+                </tr>   
+            </table>
+            <hr/>
+        
+    </ui:define>
+</ui:composition>

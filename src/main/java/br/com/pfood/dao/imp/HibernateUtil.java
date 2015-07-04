@@ -18,6 +18,7 @@ import br.com.pfood.model.Pais;
 import br.com.pfood.model.Pessoa;
 import br.com.pfood.model.Produto;
 import br.com.pfood.model.ProdutoComplemento;
+import br.com.pfood.model.TipoAgrupamentoComplemento;
 import br.com.pfood.model.Usuario;
 import br.com.pfood.model.Vendedor;
 import br.com.pfood.model.VendorPerfil;
@@ -102,7 +103,7 @@ public class HibernateUtil {
             conf.addAnnotatedClass(ProdutoComplemento.class);
             conf.addAnnotatedClass(ImagemProduto.class);
             conf.addAnnotatedClass(ImagemVendedor.class);
-            
+            conf.addAnnotatedClass(TipoAgrupamentoComplemento.class);
           
             SessionFactory sessionFactory = conf.buildSessionFactory(registry);
             mapaSessao.put(nomeBase, sessionFactory);

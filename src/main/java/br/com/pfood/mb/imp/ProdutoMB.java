@@ -75,6 +75,7 @@ public class ProdutoMB extends GenericMBImp<Produto>{
         super.init(produtoBO);
         user = new Usuario();
         super.getAll();
+        super.novoAoGravar= false;
 
     }
 

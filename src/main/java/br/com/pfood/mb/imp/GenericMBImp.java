@@ -37,7 +37,8 @@ public abstract class GenericMBImp<T> implements GenericMB, Serializable {
     @Inject
     protected MessageUtil messageUtil;
     protected BeanManager beanManager;
-
+    protected boolean novoAoGravar = true;
+    
     @Inject @Any private Event<List<T>> eventList;
     @Inject @Any Event<T> evtObj;
     public Event<List<T>> getEventList() {
@@ -143,6 +144,10 @@ public abstract class GenericMBImp<T> implements GenericMB, Serializable {
             }
             eventList.fire(lista);
             evtObj.fire(obj);
+           
+            if(novoAoGravar){
+                novo();
+            }
         } catch (Exception ex) {
             logger.error(ex.getMessage());
             messageUtil.addMenssageError(ex.getMessage());

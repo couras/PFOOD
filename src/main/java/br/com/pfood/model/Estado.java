@@ -1,11 +1,11 @@
 package br.com.pfood.model;
 
-import com.sun.corba.se.impl.orbutil.ObjectUtility;
 import java.io.Serializable;
 import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.ForeignKey;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -16,7 +16,6 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.UniqueConstraint;
 
-import org.hibernate.annotations.ForeignKey;
 
 
 @Entity
@@ -38,8 +37,8 @@ public class Estado implements Serializable {
 	private String sigla;
 	
 	@ManyToOne(optional = false)
-	@JoinColumn(name="id_pais")
-	@ForeignKey(name="estado_pais_fk")
+	@JoinColumn(name="id_pais" ,  foreignKey = @ForeignKey(name="estado_pais_fk"))
+	
 	private Pais pais;
 
 	@Temporal(TemporalType.TIMESTAMP)

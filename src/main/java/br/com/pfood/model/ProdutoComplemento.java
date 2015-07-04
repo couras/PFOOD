@@ -27,7 +27,7 @@ import javax.persistence.UniqueConstraint;
  */
 @Entity
 @Table(name = "produto_complemento" 
-, uniqueConstraints = @UniqueConstraint(columnNames = {"id_produto" , "id_complemento", "tipo" }))
+, uniqueConstraints = @UniqueConstraint(columnNames = {"id_produto" , "id_complemento", "tipo" , "id_tipo_agrupamento_complemento" }))
 public class ProdutoComplemento implements Serializable{
     
     @Id
@@ -55,8 +55,9 @@ public class ProdutoComplemento implements Serializable{
     @Column(name = "tipo" , nullable = false)//1 - Padrao - 2 - Adicional - 3 -selecao
     private Integer tipo;
     
-    @Column(name = "descricaoAgrupamento")
-    private String descricaoAgrupamento;
+    @ManyToOne()
+    @JoinColumn(name = "id_tipo_agrupamento_complemento")
+    private TipoAgrupamentoComplemento tipoAgrupamentoComplemento;
 
     public Integer getIdProdutoComplemento() {
         return idProdutoComplemento;
@@ -114,20 +115,22 @@ public class ProdutoComplemento implements Serializable{
         this.tipo = tipo;
     }
 
-    public String getDescricaoAgrupamento() {
-        return descricaoAgrupamento;
+    public TipoAgrupamentoComplemento getTipoAgrupamentoComplemento() {
+        return tipoAgrupamentoComplemento;
     }
 
-    public void setDescricaoAgrupamento(String descricaoAgrupamento) {
-        this.descricaoAgrupamento = descricaoAgrupamento;
+    public void setTipoAgrupamentoComplemento(TipoAgrupamentoComplemento tipoAgrupamentoComplemento) {
+        this.tipoAgrupamentoComplemento = tipoAgrupamentoComplemento;
     }
 
+    
     @Override
     public int hashCode() {
-        int hash = 3;
-        hash = 43 * hash + Objects.hashCode(this.produto);
-        hash = 43 * hash + Objects.hashCode(this.complemento);
-        hash = 43 * hash + Objects.hashCode(this.tipo);
+        int hash = 7;
+        hash = 61 * hash + Objects.hashCode(this.produto);
+        hash = 61 * hash + Objects.hashCode(this.complemento);
+        hash = 61 * hash + Objects.hashCode(this.tipo);
+        hash = 61 * hash + Objects.hashCode(this.tipoAgrupamentoComplemento);
         return hash;
     }
 
@@ -146,11 +149,19 @@ public class ProdutoComplemento implements Serializable{
         if (!Objects.equals(this.complemento, other.complemento)) {
             return false;
         }
-        if (this.tipo != other.tipo) {
+        if (!Objects.equals(this.tipo, other.tipo)) {
+            return false;
+        }
+        if (!Objects.equals(this.tipoAgrupamentoComplemento, other.tipoAgrupamentoComplemento)) {
             return false;
         }
         return true;
     }
+
+
+    
+
+    
 
 
     

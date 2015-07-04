@@ -84,7 +84,6 @@ function spninnerbtnactive() {
                 input.val(parseInt(input.val()) + 1);
             } else {
                 btn.prop("disabled", true);
-                clearInterval(action);
             }
         } else {
 
@@ -92,10 +91,18 @@ function spninnerbtnactive() {
                 input.val(parseInt(input.val()) - 1);
             } else {
                 btn.prop("disabled", true);
-                clearInterval(action);
             }
         }
     });
 
 };
-    
+ 
+function desabilitaComplementoNome(){
+      select = $(".selectTipoAgrupamentoComplemento")
+      value = select.val();
+       if(value != "Selecione ou informe um novo agrupamento: "){ 
+           $(".nomeTipoProdutoComplemento").hide()
+       }else{
+            $(".nomeTipoProdutoComplemento").show()
+       }
+    }
