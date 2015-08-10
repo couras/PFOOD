@@ -22,6 +22,7 @@ import org.hibernate.Session;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
+import org.hibernate.transform.ResultTransformer;
 
 /**
  *
@@ -37,8 +38,8 @@ public class GenericDAOImp implements GenericDAO, Serializable {
 
     @Override
     public <T extends Object> T save(T entity) throws Exception {
-           session.saveOrUpdate(entity);
-        return  (T)entity;
+        session.saveOrUpdate(entity);
+        return (T) entity;
     }
 
     @Override
@@ -60,6 +61,24 @@ public class GenericDAOImp implements GenericDAO, Serializable {
     @Override
     public <T extends Object> List<T> getAll(Class<T> classe) {
         return (List<T>) session.createCriteria(classe).list();
+    }
+
+    @Override
+    public <T extends Object> List<T> getAllLimit(Class<T> classe, Order order, Integer inicio, Integer fim) {
+        Criteria c = session.createCriteria(classe);
+        if (inicio != null) {
+            c.setFirstResult(inicio);
+        }
+        if (fim != null) {
+            c.setMaxResults(fim);
+        }
+        if (order != null) {
+            c.addOrder(order);
+        }
+
+        c.setResultTransformer(c.DISTINCT_ROOT_ENTITY);
+
+        return (List<T>) c.list();
     }
 
     /**
@@ -131,16 +150,17 @@ public class GenericDAOImp implements GenericDAO, Serializable {
     }
 
     /**
-     * Metodo criado inicialmente para busca de item_tabela_preco.
-     * Voce deve preencher o objeto com os atributos a ser buscado.
-     * Vai executar uma busca  apartir de todos os atributos COM VALOR, onde on valor
-     * for igual  ao informado ou entao esta null no banco. A busca é apenas pelos atributos que possuem valor,
-     * nao em todo os atributos do objeto.
+     * Metodo criado inicialmente para busca de item_tabela_preco. Voce deve
+     * preencher o objeto com os atributos a ser buscado. Vai executar uma busca
+     * apartir de todos os atributos COM VALOR, onde on valor for igual ao
+     * informado ou entao esta null no banco. A busca é apenas pelos atributos
+     * que possuem valor, nao em todo os atributos do objeto.
+     *
      * @param <T>
      * @param obj
      * @param order
      * @return
-     * @throws Exception 
+     * @throws Exception
      */
     @Override
     public <T> List<T> getPorAtributosIguaisOuNull(T obj, Order order) throws Exception {

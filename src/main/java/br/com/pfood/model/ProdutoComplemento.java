@@ -46,7 +46,7 @@ public class ProdutoComplemento implements Serializable{
     @Column(name = "quantidade", nullable = false)
     private Integer quantidade =1 ;
     
-     @Column(name = "quantidade_limite" , nullable = false )
+    @Column(name = "quantidade_limite" , nullable = false )
     private Integer quantidadeLimite =0;
     
     @Column(name = "sequencia" , nullable = false )
@@ -58,7 +58,7 @@ public class ProdutoComplemento implements Serializable{
     @ManyToOne()
     @JoinColumn(name = "id_tipo_agrupamento_complemento")
     private TipoAgrupamentoComplemento tipoAgrupamentoComplemento;
-
+    
     public Integer getIdProdutoComplemento() {
         return idProdutoComplemento;
     }
@@ -122,6 +122,8 @@ public class ProdutoComplemento implements Serializable{
     public void setTipoAgrupamentoComplemento(TipoAgrupamentoComplemento tipoAgrupamentoComplemento) {
         this.tipoAgrupamentoComplemento = tipoAgrupamentoComplemento;
     }
+
+ 
 
     
     @Override

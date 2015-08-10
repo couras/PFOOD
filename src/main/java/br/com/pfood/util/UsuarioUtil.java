@@ -31,5 +31,5 @@ public class UsuarioUtil {
 			return BundleUtil.getBase(vector[0]);
 	}
       
-        
+
 }

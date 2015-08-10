@@ -35,7 +35,7 @@ public class Imagem implements Serializable {
     private String hash;
     
     @Column(name = "sequencia")
-    private Integer sequencia;
+    private Integer sequencia =0;
     
     @Column(name = "codigo")
     private Integer codigo;

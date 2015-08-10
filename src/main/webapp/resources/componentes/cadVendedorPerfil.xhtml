@@ -1,0 +1,56 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:cc="http://xmlns.jcp.org/jsf/composite"
+      xmlns:co="http://xmlns.jcp.org/jsf/composite/component"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ps="http://xmlns.jcp.org/jsf/passthrough">
+
+    <!-- INTERFACE -->
+    <cc:interface>
+    </cc:interface>
+
+    <!-- IMPLEMENTATION -->
+    <cc:implementation>
+
+
+        <h:form prependId="false" class="form-group" role="form">
+            <h:panelGroup layout="block" class="container-fluid">
+                <div class="row">
+                    <div class="col-md-12">
+                        <h5>Informe os dias que voce trabalha e seus horários de atendimento, lembre-se, você pode ser negativado no site caso não os cumpra com seus cliente</h5><br/>
+                        <h5>Se você fechar algum dia que custuma funcionar, desmarque o campo "receber pedidos", assim niguém poderá fazer um pedido pra você</h5>
+                        <div class="container">
+                            <div class="col-md-12">
+                                <div class="input-group bootstrap-timepicker">
+                                    <input id="timepicker1" type="text" class="myTime"/>
+                                    <span class="input-group-addon"><i class="glyphicon glyphicon-time"></i></span>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div class="row">
+                            <div class="col-md-1">
+                                <h:panelGroup layout="block"  class="form-group">
+                                    <h:outputLabel class="control-label" for="bolSegunda" value="Segunda"/>
+                                    <h:selectBooleanCheckbox class="form-control" id="bolSegunda" value="#{vendedorPerfilMB.obj.funcSegunda}" />
+                                </h:panelGroup>
+                            </div>
+                        </div>    
+                    </div>
+                </div>
+            </h:panelGroup>
+        </h:form>
+        <script type="text/javascript">
+            $('.myTime').timepicker({
+                minuteStep: 5,
+                showSeconds: false,
+                showMeridian: false,
+                defaultTime: false});
+        </script>
+
+    </cc:implementation>
+</html>

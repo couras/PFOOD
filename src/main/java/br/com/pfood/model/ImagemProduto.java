@@ -34,6 +34,10 @@ public class ImagemProduto implements Serializable{
     @ManyToOne
     @JoinColumn(name="id_produto" , foreignKey = @ForeignKey(name = "imgProd_prod_fk"))
     private Produto produto;
+    
+    @ManyToOne
+    @JoinColumn(name="id_imagem" , foreignKey = @ForeignKey(name = "imgProd_img_fk"))
+    private  Imagem imagem ;
        
     @Column(name = "sequencia")
     private Integer sequencia=0;
@@ -65,6 +69,14 @@ public class ImagemProduto implements Serializable{
 
     public Integer getSequencia() {
         return sequencia;
+    }
+
+    public Imagem getImagem() {
+        return imagem;
+    }
+
+    public void setImagem(Imagem imagem) {
+        this.imagem = imagem;
     }
 
     public void setSequencia(Integer sequencia) {

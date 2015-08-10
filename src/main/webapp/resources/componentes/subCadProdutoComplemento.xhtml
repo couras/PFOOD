@@ -16,6 +16,8 @@
     <cc:implementation>
 
         <h:form prependId="false">  
+        
+
             <h:panelGroup layout="block"  id="panelGroupSubcadProd" >
                 <h:panelGroup layout="block"  id="panelGroupSubcadProdRendered"  rendered="#{produtoComplementoMB.produto.idProduto >0}"  >   
                     <!-- Nav tabs -->           
@@ -274,7 +276,7 @@
                                         <h4 class="panel-title">Dados Complementos Adicionais</h4>
                                     </div>
                                     <h:panelGroup id="panelGridDadosPadraoCpo" layout="block"  class="panel-body">
-                                        
+
                                         <h:panelGroup layout="block"  class="form-group">
                                             <h:outputLabel class="control-label" for="selectTac" value="Agrupamento"/>
                                             <h:selectOneMenu onchange="desabilitaComplementoNome()"  id="selectTac" class="form-control btn btn-default selectTipoAgrupamentoComplemento" converter="tipoAgrupamentoComplementoConverter" value="#{produtoComplementoMB.tipoAgrupamentoComplementoSelecionado}">
@@ -283,7 +285,6 @@
                                             </h:selectOneMenu>
                                             <h:outputLabel class="control-label nomeTipoProdutoComplemento" for="inputTextDescricaoAgrupamento" value="Descricao" rendered="#{produtoComplementoMB.tipoAgrupamentoComplementoSelecionado==null}"/>
                                             <h:inputText  class="form-control nomeTipoProdutoComplemento" id="inputTextDescricaoAgrupamento" value="#{produtoComplementoMB.tipoAgrupamentoComplemento.descricao}" rendered="#{produtoComplementoMB.tipoAgrupamentoComplementoSelecionado==null}">
-                                                <f:validateLength minimum="2"/>
                                             </h:inputText>    
                                         </h:panelGroup>
                                         <h:panelGroup layout="block"  class="form-group">
@@ -317,7 +318,46 @@
 
                         </div>
 
-                        <div role="tabpanel" class="tab-pane" id="imagens">...</div>
+                        <div role="tabpanel" class="tab-pane" id="imagens">
+
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <p:fileUpload fileUploadListener="#{produtoMB.handleFileUpload}" label="Envie até 6 imagens" multiple="true"  mode="advanced"
+                                                  auto="true" fileLimit="6"  update="orderListImgProduto"  />
+                                </div>
+                                <div class="col-md-4">
+                                    <p:orderList id="orderListImgProduto"  value="#{produtoMB.listaImagensProduto}" var="img" itemValue="#{img}" converter="imagemProdutoConverter" controlsLocation="left" >
+
+                                        <f:facet name="caption">Orderm de apresentação</f:facet>
+
+                                        <p:column style="width:85%">
+                                            <div style="width: 128px; height: 128px;"> 
+                                                <h:graphicImage  url="#{produtoMB.getUrlImage(img)}">
+                                                </h:graphicImage>
+                                            </div>                                          
+                                        </p:column>
+                                        <p:column style="width:15%">
+                                            <h:commandLink class="btn btn-danger"  actionListener="#{produtoMB.removeImagem}" title="Remover">
+                                                <f:param name="imgProd" value="#{img.idImagemProduto}"/>
+                                                    <i class="fa fa-trash-o fa-lg"></i>
+                                                    <f:ajax   execute="@this" render="orderListImgProduto" />
+                                            </h:commandLink>
+                                        </p:column>
+                                    </p:orderList>
+
+                                    <h:commandButton class="btn btn-primary"  value="Salvar nova ordenação" id="btnSubmitOrderList"   >
+                                        <f:ajax execute="orderListImgProduto"  listener="#{produtoMB.gravarOrdenacao()}"  render="orderListImgProduto" />
+                                    </h:commandButton>
+                                    <style>
+                                        .ui-orderlist .ui-orderlist-list {
+
+                                            height: 260px !important;
+                                            width: 260px !important;
+                                        }
+                                    </style>    
+                                </div>    
+                            </div>
+                        </div>
                     </div>
                 </h:panelGroup>
             </h:panelGroup>

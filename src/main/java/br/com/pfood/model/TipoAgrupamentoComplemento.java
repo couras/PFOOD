@@ -9,9 +9,12 @@ import java.io.Serializable;
 import java.util.Objects;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.ForeignKey;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 /**
@@ -29,6 +32,10 @@ public class TipoAgrupamentoComplemento  implements Serializable{
     
     @Column(name = "descricao")
     private String descricao;
+    
+    @ManyToOne
+    @JoinColumn(name="id_vendedor" , foreignKey = @ForeignKey(name = "tp_comp_vendor_fk"))
+    private Vendedor vendedor;
 
     public Integer getIdTipoAgrupamentoComplemento() {
         return idTipoAgrupamentoComplemento;
@@ -46,6 +53,14 @@ public class TipoAgrupamentoComplemento  implements Serializable{
         this.descricao = descricao;
     }
 
+    public Vendedor getVendedor() {
+        return vendedor;
+    }
+
+    public void setVendedor(Vendedor vendedor) {
+        this.vendedor = vendedor;
+    }
+ 
     @Override
     public int hashCode() {
         int hash = 7;

@@ -10,7 +10,9 @@ import br.com.pfood.bo.VendedorBO;
 import br.com.pfood.enumerated.SituacaoEnum;
 import br.com.pfood.model.Usuario;
 import br.com.pfood.model.Vendedor;
+import br.com.pfood.util.AppUtil;
 import br.com.pfood.util.Encrypt;
+import java.io.File;
 import javax.annotation.PostConstruct;
 import javax.faces.event.ActionEvent;
 import javax.faces.view.ViewScoped;
@@ -58,7 +60,20 @@ public class VendedorMB extends GenericMBImp<Vendedor>{
           user.setUsuario(obj.getPessoa().getEmail());
           user.setSenha(Encrypt.criptografarSenhaUsuario(user.getSenha()));
           vendedorBO.save(user);
-               
+          
+          File f = new File(AppUtil.getDirFilesVendor()+obj.getIdVendedor());
+          if(!f.exists())
+              f.mkdirs();
+          f = new File(AppUtil.getDirFilesVendor()+obj.getIdVendedor()+"/or");
+          if(!f.exists())
+              f.mkdirs();
+          f = new File(AppUtil.getDirFilesVendor()+obj.getIdVendedor()+"/md");
+          if(!f.exists())
+              f.mkdirs();
+          f = new File(AppUtil.getDirFilesVendor()+obj.getIdVendedor()+"/sm");
+          if(!f.exists())
+              f.mkdirs();
+          
             RequestContext.getCurrentInstance().execute("closeDialogVendor.click();");
         } catch (Exception ex) {
             messageUtil.addMenssageError(ex.getMessage());

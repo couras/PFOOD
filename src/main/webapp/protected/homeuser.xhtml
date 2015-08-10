@@ -12,6 +12,22 @@
         <div class="container-fluid">
 
             <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+
+                <div class="panel panel-primary">
+                    <div class="panel-heading" role="tab" id="headingperf">
+                        <h4 class="panel-title">
+                            <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapsePerf" aria-expanded="false" aria-controls="collapsePerf">
+                                Meu Perfil
+                            </a>
+                        </h4>
+                    </div>
+                    <div id="collapsePerf" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingperf">
+                        <div class="panel-body">
+                            <componentes:cadVendedorPerfil id="cadVendedorPerfil"/>
+                        </div>
+                    </div>
+                </div>
+
                 <div class="panel panel-primary">
                     <div class="panel-heading" role="tab" id="headingOne">
                         <h4 class="panel-title">

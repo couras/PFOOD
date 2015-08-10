@@ -107,4 +107,14 @@ public abstract class GenericBOImp implements GenericBO , Serializable{
         return i;
     }
    
+    @Override
+    public <T extends Object> List<T> getAllLimit(Class<T> classe, Order order, Integer inicio, Integer fim) {
+          try {
+            return dao.getAllLimit(classe, order, inicio, fim);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            return null;
+        }
+    }
+   
 }

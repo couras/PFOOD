@@ -45,5 +45,6 @@ public interface GenericBO extends Serializable{
      * @return obj
      */
     public <T extends Object> T getPorAtributosUnicos(T obj) ;
-    
+   
+    public <T extends Object> List<T> getAllLimit(Class<T> classe, Order order, Integer inicio, Integer fim) ;
 }

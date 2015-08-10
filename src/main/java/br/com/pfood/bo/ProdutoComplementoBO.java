@@ -8,6 +8,8 @@ package br.com.pfood.bo;
 
 import br.com.pfood.model.Produto;
 import br.com.pfood.model.ProdutoComplemento;
+import br.com.pfood.model.TipoAgrupamentoComplemento;
+import br.com.pfood.model.Vendedor;
 import java.util.List;
 
 /**
@@ -16,6 +18,6 @@ import java.util.List;
  */
 
 public interface ProdutoComplementoBO  extends GenericBO{
-
+    public List<TipoAgrupamentoComplemento> getTipoComplementoByVendor(Vendedor vendor) throws Exception;
     
 }

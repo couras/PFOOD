@@ -55,4 +55,6 @@ public interface GenericDAO  {
     public <T extends Object> T getPorAtributosUnicos(T obj) throws Exception;
     
     public int buscaProximoCodigo(Class classe) throws Exception;
+    
+    public <T extends Object> List<T> getAllLimit(Class<T> classe , Order order , Integer inicio , Integer fim) throws Exception;
 }

@@ -13,7 +13,7 @@ import br.com.pfood.model.Pessoa;
 import br.com.pfood.model.Produto;
 import br.com.pfood.model.Usuario;
 import br.com.pfood.model.Vendedor;
-import br.com.pfood.model.VendorPerfil;
+import br.com.pfood.model.VendedorPerfil;
 import java.util.ResourceBundle;
 
 import org.hibernate.cfg.Configuration;
@@ -53,7 +53,7 @@ public class GeraBanco {
             conf.addAnnotatedClass(GrupoProduto.class);
             conf.addAnnotatedClass(Imagem.class);
             conf.addAnnotatedClass(Produto.class);
-            conf.addAnnotatedClass(VendorPerfil.class);
+            conf.addAnnotatedClass(VendedorPerfil.class);
         
         SchemaExport se = new SchemaExport(conf);
         se.setOutputFile("E:/DDL.sql");

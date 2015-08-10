@@ -30,7 +30,7 @@
 
                     <p:column>
                         <h:commandButton value="edit" > 
-                            <f:ajax onevent="prodShow"   listener="#{produtoMB.setObj(prod)}" execute="@this" render=":cadProd:panelGridDados :cadProd:subCadProdComp:panelGroupSubcadProd"/>    
+                            <f:ajax onevent="prodShow"   listener="#{produtoMB.setProduto(prod)}" execute="@this" render=":cadProd:panelGridDados :cadProd:subCadProdComp:panelGroupSubcadProd"/>    
                         </h:commandButton>
                     </p:column>
                     <p:column>

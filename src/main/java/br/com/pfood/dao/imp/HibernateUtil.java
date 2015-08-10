@@ -21,7 +21,7 @@ import br.com.pfood.model.ProdutoComplemento;
 import br.com.pfood.model.TipoAgrupamentoComplemento;
 import br.com.pfood.model.Usuario;
 import br.com.pfood.model.Vendedor;
-import br.com.pfood.model.VendorPerfil;
+import br.com.pfood.model.VendedorPerfil;
 import java.util.HashMap;
 import java.util.ResourceBundle;
 import javax.enterprise.context.ApplicationScoped;
@@ -99,7 +99,7 @@ public class HibernateUtil {
             conf.addAnnotatedClass(GrupoProduto.class);
             conf.addAnnotatedClass(Imagem.class);
             conf.addAnnotatedClass(Produto.class);
-            conf.addAnnotatedClass(VendorPerfil.class);
+            conf.addAnnotatedClass(VendedorPerfil.class);
             conf.addAnnotatedClass(ProdutoComplemento.class);
             conf.addAnnotatedClass(ImagemProduto.class);
             conf.addAnnotatedClass(ImagemVendedor.class);

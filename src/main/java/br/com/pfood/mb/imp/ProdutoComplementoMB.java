@@ -36,15 +36,28 @@ public class ProdutoComplementoMB extends GenericMBImp<ProdutoComplemento> {
 
     @Inject
     ProdutoComplementoBO produtoComplementoBO;
+    @Inject
+    UsuarioLogadoMB usuarioLogado;
     private List<Complemento> listaComplemento = new ArrayList<Complemento>();
     private Produto produto;
     private int action = 0; 
     private List<TipoAgrupamentoComplemento> listaTipoAgrupamentoComplemento;
+    // essa lista recebe apenas o 3 complemento principais, adicional, padrao e opcional
+    private List<TipoAgrupamentoComplemento> listaTipoAgrupamentoComplementoPadroes;
+    
     private TipoAgrupamentoComplemento tipoAgrupamentoComplemento;
     private TipoAgrupamentoComplemento tipoAgrupamentoComplementoSelecionado;
 
     public TipoAgrupamentoComplemento getTipoAgrupamentoComplementoSelecionado() {
         return tipoAgrupamentoComplementoSelecionado;
+    }
+
+    public List<TipoAgrupamentoComplemento> getListaTipoAgrupamentoComplementoPadroes() {
+        return listaTipoAgrupamentoComplementoPadroes;
+    }
+
+    public void setListaTipoAgrupamentoComplementoPadroes(List<TipoAgrupamentoComplemento> listaTipoAgrupamentoComplementoPadroes) {
+        this.listaTipoAgrupamentoComplementoPadroes = listaTipoAgrupamentoComplementoPadroes;
     }
 
     public void setTipoAgrupamentoComplementoSelecionado(TipoAgrupamentoComplemento tipoAgrupamentoComplementoSelecionado) {
@@ -140,7 +153,13 @@ public class ProdutoComplementoMB extends GenericMBImp<ProdutoComplemento> {
     public void init() {
         super.init(produtoComplementoBO);
         user = new Usuario();
-        listaTipoAgrupamentoComplemento = produtoComplementoBO.getAll(TipoAgrupamentoComplemento.class);
+        try {
+            listaTipoAgrupamentoComplementoPadroes = produtoComplementoBO.getAllLimit(TipoAgrupamentoComplemento.class, null, 0, 3);
+            listaTipoAgrupamentoComplemento = produtoComplementoBO.getTipoComplementoByVendor(usuarioLogado.getUsuario().getVendedor()) ;
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            Logger.getLogger(ProdutoComplementoMB.class.getName()).log(Level.SEVERE, null, ex);
+        }
         listaTipoAgrupamentoComplemento
                .sort((t1 , t2) 
                        -> t1.getIdTipoAgrupamentoComplemento().compareTo(t2.getIdTipoAgrupamentoComplemento()));
@@ -153,13 +172,14 @@ public class ProdutoComplementoMB extends GenericMBImp<ProdutoComplemento> {
         obj.setTipo(action);
         obj.setProduto(produto);
         if(action==1)
-            obj.setTipoAgrupamentoComplemento(listaTipoAgrupamentoComplemento.get( 0 ));
+            obj.setTipoAgrupamentoComplemento(listaTipoAgrupamentoComplementoPadroes.get( 0 ));
         if(action==2)
-            obj.setTipoAgrupamentoComplemento(listaTipoAgrupamentoComplemento.get( 1 ));
+            obj.setTipoAgrupamentoComplemento(listaTipoAgrupamentoComplementoPadroes.get( 1 ));
         if(action==3){ // fazer verificacao do agrupamento,  inserir novo se nao houver
             if(tipoAgrupamentoComplementoSelecionado == null ){
                 try { // cria o agrupamento
                     tipoAgrupamentoComplemento.setIdTipoAgrupamentoComplemento(0);
+                    this.tipoAgrupamentoComplemento.setVendedor(usuarioLogado.getUsuario().getVendedor());
                     this.tipoAgrupamentoComplemento = produtoComplementoBO.save(tipoAgrupamentoComplemento);
                     obj.setTipoAgrupamentoComplemento(tipoAgrupamentoComplemento);
                     if(!listaTipoAgrupamentoComplemento.contains(tipoAgrupamentoComplemento))
