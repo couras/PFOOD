@@ -19,38 +19,38 @@
         <h:form prependId="false" class="form-group" role="form">
             <h:panelGroup layout="block" class="container-fluid">
                 <div class="row">
-                    <div class="col-md-12">
+                    <div class="col-md-7">
                         <h5>Informe os dias que voce trabalha e seus horários de atendimento, lembre-se, você pode ser negativado no site caso não os cumpra com seus cliente</h5><br/>
                         <h5>Se você fechar algum dia que custuma funcionar, desmarque o campo "receber pedidos", assim niguém poderá fazer um pedido pra você</h5>
                         <div class="container">
-                            <div class="col-md-12">
-                                <div class="input-group bootstrap-timepicker">
-                                    <input id="timepicker1" type="text" class="myTime"/>
-                                    <span class="input-group-addon"><i class="glyphicon glyphicon-time"></i></span>
-                                </div>
+<!--                            <div class="col-md-1">-->
+                                <p:calendar id="timeSegIni" value="#{vendedorPerfilMB.obj.teste}" pattern="HH:mm"  timeOnly="true">
+                                </p:calendar>
+<!--                                <p:calendar id="timeSegFim" value="#{vendedorPerfilMB.obj.segHoraFim}" pattern="HH:mm" timeOnly="true">
+                                    <f:convertDateTime pattern="HH:mm"/>
+                                </p:calendar>-->
                             </div>
-                        </div>
+<!--                        </div>-->
 
-
-                        <div class="row">
+<!--                        <div class="row">
                             <div class="col-md-1">
                                 <h:panelGroup layout="block"  class="form-group">
                                     <h:outputLabel class="control-label" for="bolSegunda" value="Segunda"/>
                                     <h:selectBooleanCheckbox class="form-control" id="bolSegunda" value="#{vendedorPerfilMB.obj.funcSegunda}" />
                                 </h:panelGroup>
                             </div>
-                        </div>    
+                        </div>    -->
                     </div>
                 </div>
             </h:panelGroup>
         </h:form>
-        <script type="text/javascript">
+<!--        <script type="text/javascript">
             $('.myTime').timepicker({
                 minuteStep: 5,
                 showSeconds: false,
                 showMeridian: false,
                 defaultTime: false});
-        </script>
+        </script>-->
 
     </cc:implementation>
 </html>

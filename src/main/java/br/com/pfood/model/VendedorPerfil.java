@@ -145,6 +145,18 @@ public class VendedorPerfil implements Serializable {
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "data_inclusao")
     private Date dataInclusao;
+    
+    private Date teste;
+
+    public Date getTeste() {
+        return teste;
+    }
+
+    public void setTeste(Date teste) {
+        this.teste = teste;
+    }
+    
+    
 
     public int getIdVendorPerfil() {
         return idVendorPerfil;
