@@ -26,7 +26,7 @@ import org.hibernate.Session;
  * responsabilidade do próprio objeto que a produz, SessionProdutor
  * @author r.palazzio
  */
-@WebFilter(urlPatterns = "/*")
+@WebFilter(urlPatterns = "/protected/*")
 public class OpenSessionInViewFilter implements Filter {
 
     @Inject

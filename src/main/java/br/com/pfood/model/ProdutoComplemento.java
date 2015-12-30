@@ -32,7 +32,7 @@ public class ProdutoComplemento implements Serializable{
     
     @Id
     @Column(name = "id_produto_complemento")
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer idProdutoComplemento =0;
     
     @ManyToOne()

@@ -27,7 +27,7 @@ import javax.persistence.TemporalType;
 @Table(name = "imagem_produto")
 public class ImagemProduto implements Serializable{
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_imagem_produto")
     private int idImagemProduto;
 

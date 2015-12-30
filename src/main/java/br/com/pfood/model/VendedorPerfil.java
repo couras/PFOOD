@@ -31,7 +31,7 @@ public class VendedorPerfil implements Serializable {
 
     @Id
     @Column(name = "id_vendor_perfil")
-    @GeneratedValue(strategy = GenerationType.AUTO)
+   @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int idVendorPerfil;
 
     @OneToOne(optional = false, cascade = CascadeType.MERGE)

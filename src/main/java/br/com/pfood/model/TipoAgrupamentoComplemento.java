@@ -26,7 +26,7 @@ import javax.persistence.Table;
 public class TipoAgrupamentoComplemento  implements Serializable{
     
     @Id
-    @GeneratedValue(strategy =  GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_tipo_agrupamento_complemento")
     private Integer idTipoAgrupamentoComplemento  =  0 ;
     

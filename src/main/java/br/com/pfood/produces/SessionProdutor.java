@@ -12,6 +12,8 @@ import javax.enterprise.context.RequestScoped;
 import javax.enterprise.inject.Disposes;
 import javax.enterprise.inject.Produces;
 import javax.inject.Inject;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import org.apache.log4j.Logger;
 import org.hibernate.Session;
 
@@ -26,18 +28,21 @@ import org.hibernate.Session;
  */
 
 public class SessionProdutor {
-    
+    @PersistenceContext
+    private EntityManager entity;
+            
     private Session session;
     @Inject
     private transient  Logger logger;
-    @Inject
-    private transient UsuarioUtil usuarioUtil;
+//    @Inject
+//    private transient UsuarioUtil usuarioUtil;
     
     @Produces @RequestScoped 
     public Session produtorSession(){
-        this.session  = HibernateUtil.getSessionFactory(
-                usuarioUtil.getDataBase()).openSession();
-        logger.debug("Sessao hibernate aberta");
+//        this.session  = HibernateUtil.getSessionFactory(
+//                usuarioUtil.getDataBase()).openSession();
+//        logger.debug("Sessao hibernate aberta");
+        session  = (Session) entity.getDelegate();
         return session;
     }
     

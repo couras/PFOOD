@@ -69,10 +69,10 @@
 
 
         <!-- mysql -->
-        <dependency>
+    	<dependency>
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
-            <version>5.1.6</version>
+            <version>5.1.35</version>
         </dependency>
         <!-- file upload -->
         <dependency>
